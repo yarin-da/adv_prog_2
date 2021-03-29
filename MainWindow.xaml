@@ -1,0 +1,131 @@
+﻿<Window x:Class="Adv_Prog_2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Adv_Prog_2"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1080">
+    <DockPanel LastChildFill="False">
+        <!-- Load Files, Connect, Media Controls -->
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <!-- Load Files, Connect, Help -->
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="50" >Server</Label>
+                    <TextBox Width="150" Name="ServerTextBox" Text="127.0.0.1" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Width="50" >Port</Label>
+                    <TextBox Width="150" Name="PortTextBox" Text="5400" />
+                </StackPanel>
+                <Button Name="ConnectButton" Content="Connect" Click="ConnectToServer" />
+                <Button Name="CSVFileButton" Content="Upload Flight Data" Click="UploadFlightData" />
+                <Button Name="HelpButton" Content="Help" Click="Help" />
+                <Label Name="FileChosenLabel" Content="Missing CSV file" Foreground="#FFFF0000" />
+                <Label Name="ConnectionLabel" Content="Not Connected" Foreground="#FFFF0000" />
+            </StackPanel>
+            <Grid Grid.Column="1" Height="200" >
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="Margin" Value="1"/>
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions >
+                <Grid Margin="25" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions >
+                    <Grid Grid.Column="1" Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions >
+                        <Button Grid.Column="0" Click="SkipBackwards">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Image Source="Resources\playback-beginning.png"/>
+                        </Button>
+                        <Button Grid.Column="1" Click="ReducePlaybackSpeed">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Image Source="Resources\playback-rewind.png" />
+                        </Button>
+                        <Button Grid.Column="2" Click="Play">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Image Source="Resources\playback-play.png" />
+                        </Button>
+                        <Button Grid.Column="3" Click="Pause">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Image Source="Resources\playback-pause.png" />
+                        </Button>
+                        <Button Grid.Column="4" Click="Stop">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Image Source="Resources\playback-stop.png" />
+                        </Button>
+                        <Button Grid.Column="5" Click="IncreasePlaybackSpeed">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Image Source="Resources\playback-fast-forward.png" />
+                        </Button>
+                        <Button Grid.Column="6" Click="SkipForward">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="5"/>
+                                </Style>
+                            </Button.Resources>
+                            <Image Source="Resources\playback-end.png" />
+                        </Button>
+                    </Grid>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Play Speed" />
+                        <TextBox Name="SpeedTextBox" TextChanged="UpdateSpeed" Width="30" Text="{Binding VM_SpeedString}" VerticalContentAlignment="center" HorizontalContentAlignment="center"></TextBox>
+                    </StackPanel>
+                    <Label Width="75" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Content="{Binding VM_TimerString}" />
+                </Grid>
+                <!-- Simulation progress slider (time passed) -->
+                <Slider Name="TimeSlider" Value="{Binding VM_Frame, Mode=TwoWay}" Grid.Row="1" VerticalAlignment="Center" Minimum="0" Maximum="{Binding VM_FrameCount}" Margin="40,0,10,0" Grid.ColumnSpan="2" />
+            </Grid>
+        </Grid>
+    </DockPanel>
+</Window>

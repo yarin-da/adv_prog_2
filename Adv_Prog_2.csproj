@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\playback-beginning.png" />
+    <None Remove="Resources\playback-end.png" />
+    <None Remove="Resources\playback-fast-forward.png" />
+    <None Remove="Resources\playback-pause.png" />
+    <None Remove="Resources\playback-play.png" />
+    <None Remove="Resources\playback-rewind.png" />
+    <None Remove="Resources\playback-stop.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\playback-beginning.png" />
+    <Resource Include="Resources\playback-end.png" />
+    <Resource Include="Resources\playback-fast-forward.png" />
+    <Resource Include="Resources\playback-pause.png" />
+    <Resource Include="Resources\playback-play.png" />
+    <Resource Include="Resources\playback-rewind.png" />
+    <Resource Include="Resources\playback-stop.png" />
+  </ItemGroup>
+
+</Project>
