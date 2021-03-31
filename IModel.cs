@@ -7,7 +7,6 @@ namespace Adv_Prog_2
 {
     interface IModel : INotifyPropertyChanged
     {
-        public void Start();
         public bool IsConnected { get; }
         public void Connect(int port, string server);
         public void Disconnect();
@@ -21,5 +20,6 @@ namespace Adv_Prog_2
         public void Pause();
         public void Stop();
         public void SetFlightDataFile(string filePath);
+        public void SetColumnData(string filePath);
     }
 }

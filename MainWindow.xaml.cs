@@ -29,7 +29,7 @@ namespace Adv_Prog_2
         IViewModel vm = new FlightViewModel();
         
         // colors for status labels
-        SolidColorBrush darkGreen = new SolidColorBrush(Colors.DarkGreen);
+        SolidColorBrush green = new SolidColorBrush(Colors.LightGreen);
         SolidColorBrush red = new SolidColorBrush(Colors.Red);
 
         public MainWindow()
@@ -50,18 +50,18 @@ namespace Adv_Prog_2
                     string server = ServerTextBox.Text;
                     vm.Connect(port, server);
                     // update the GUI to notify the user that we're connected
-                    ConnectButton.Content = "Disconnect";
-                    ConnectionLabel.Content = "Connection Established";
-                    ConnectionLabel.Foreground = darkGreen;
+                    ButtonConnect.Content = "Disconnect";
+                    LabelConnection.Content = "Connection Established";
+                    LabelConnection.Foreground = green;
                 }
-                catch (Exception ex) { Console.WriteLine(ex); }
+                catch (Exception ex) { LabelConnection.Content = "Connection Failed!"; }
             }
             else {
                 // update the GUI to notify the user that we're disconnected
                 vm.Disconnect();
-                ConnectButton.Content = "Connect";
-                ConnectionLabel.Content = "Not Connected";
-                ConnectionLabel.Foreground = red;
+                ButtonConnect.Content = "Connect";
+                LabelConnection.Content = "Not Connected";
+                LabelConnection.Foreground = red;
             }
         }
 
@@ -79,18 +79,38 @@ namespace Adv_Prog_2
         public void UploadFlightData(object sender, RoutedEventArgs e)
         {
             // ask the user for a CSV file
+            string filePath = UploadFile("csv", LabelCSV);
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                vm.SetFlightData(filePath);
+            }
+        }
+
+        public string UploadFile(string type, Label label)
+        {
+            string filePath = "";
+            // ask the user for a file (of a specific type)
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Text files (*.csv)|*.csv|All files (*.*)|*.*";
+            openFileDialog.Filter = String.Format("Text files (*.{0})|*.{0}|All files (*.*)|*.*", type);
             if (openFileDialog.ShowDialog() == true)
             {
-                // get the filename from the path
-                string filePath = openFileDialog.FileName;
+                // get the path and extract the filename to update our label
+                filePath = openFileDialog.FileName;
                 string fileName = filePath.Substring(filePath.LastIndexOf("\\") + 1);
-                // update the GUI to notify the user that a CSV file is chosen
-                FileChosenLabel.Content = fileName;
-                FileChosenLabel.Foreground = darkGreen;
-                // make sure the model sends frames from the new file
-                vm.SetFlightData(filePath);
+                // update the GUI to notify the user that the file was accepted
+                label.Content = fileName;
+                label.Foreground = green;
+            }
+            return filePath;
+        }
+
+        public void UploadColumnData(object sender, RoutedEventArgs e)
+        {
+            // ask the user for an XML file
+            string filePath = UploadFile("xml", LabelXML);
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                vm.SetColumnData(filePath);
             }
         }
 

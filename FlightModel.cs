@@ -12,21 +12,20 @@ namespace Adv_Prog_2
     {
         private INetClient netClient;
         private ISimPlayer simPlayer;
+        private IFileIterator fileIterator;
+        private XMLParser dataParser;
 
-        public FlightModel(INetClient netClient, ISimPlayer simPlayer)
+        public FlightModel()
         {
-            this.netClient = netClient;
-            this.simPlayer = simPlayer;
+            this.netClient = new FlightNetClient();
+            this.fileIterator = new FlightDataIterator();
+            this.simPlayer = new FlightSimPlayer(netClient, fileIterator);
+            this.dataParser = new XMLParser();
             simPlayer.PropertyChanged +=
                 delegate (Object sender, PropertyChangedEventArgs e)
                 {
                     NotifyPropertyChanged(e.PropertyName);
                 };
-        }
-
-        public void Start()
-        {
-            simPlayer.Play();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -37,6 +36,7 @@ namespace Adv_Prog_2
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
         public bool IsConnected { get { return netClient.IsConnected; } }
         public void Connect(int port, string server) { netClient.Connect(port, server); }
         public void Disconnect() { netClient.Disconnect(); }
@@ -64,6 +64,11 @@ namespace Adv_Prog_2
         public void Play() { simPlayer.Play(); }
         public void Pause() { simPlayer.Pause(); }
         public void Stop() { simPlayer.Stop(); }
-        public void SetFlightDataFile(string filePath) { simPlayer.SetFlightDataFile(filePath); }
+        public void SetFlightDataFile(string filePath) {
+            simPlayer.LoadFile(filePath);
+        }
+        public void SetColumnData(string filePath) {
+            dataParser.LoadFile(filePath);
+        }
     }
 }

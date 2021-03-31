@@ -12,15 +12,14 @@ namespace Adv_Prog_2
 
         public FlightViewModel()
         {
-            INetClient netClient = new FlightNetClient();
-            ISimPlayer simPlayer = new FlightSimPlayer(netClient);
-            model = new FlightModel(netClient, simPlayer);
+            model = new FlightModel();
             model.PropertyChanged +=
                 delegate(Object sender, PropertyChangedEventArgs e)
                 {
                     NotifyPropertyChanged("VM_" + e.PropertyName);
                 };
         }
+
         public int VM_Frame {
             get { return model.Frame; }
             set { model.Frame = value; }
@@ -57,7 +56,7 @@ namespace Adv_Prog_2
 
         public void Start()
         {
-            model.Start();
+            model.Play();
         }
 
         public void Connect(int port, string server)
@@ -83,6 +82,11 @@ namespace Adv_Prog_2
         public void SetFlightData(string filePath)
         {
             model.SetFlightDataFile(filePath);
+        }
+
+        public void SetColumnData(string filePath)
+        {
+            model.SetColumnData(filePath);
         }
     }
 }

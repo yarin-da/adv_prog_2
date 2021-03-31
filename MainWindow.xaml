@@ -7,6 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1080">
     <DockPanel LastChildFill="False">
+        <Label Content="{Binding VM_TestXML}" Foreground="#FFFF0000" Background="Black" />
         <!-- Load Files, Connect, Media Controls -->
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
@@ -23,11 +24,13 @@
                     <Label Width="50" >Port</Label>
                     <TextBox Width="150" Name="PortTextBox" Text="5400" />
                 </StackPanel>
-                <Button Name="ConnectButton" Content="Connect" Click="ConnectToServer" />
-                <Button Name="CSVFileButton" Content="Upload Flight Data" Click="UploadFlightData" />
-                <Button Name="HelpButton" Content="Help" Click="Help" />
-                <Label Name="FileChosenLabel" Content="Missing CSV file" Foreground="#FFFF0000" />
-                <Label Name="ConnectionLabel" Content="Not Connected" Foreground="#FFFF0000" />
+                <Button Name="ButtonConnect" Content="Connect" Click="ConnectToServer" />
+                <Button Name="ButtonCSV" Content="Upload CSV file" Click="UploadFlightData" />
+                <Button Name="ButtonXML" Content="Upload XML file" Click="UploadColumnData" />
+                <Button Name="ButtonHelp" Content="Help" Click="Help" />
+                <Label Name="LabelConnection" Content="Not Connected" Foreground="#FFFF0000" HorizontalContentAlignment="Center" Background="Black" />
+                <Label Name="LabelCSV" Content="Missing CSV file" Foreground="#FFFF0000" HorizontalContentAlignment="Center" Background="Black" />
+                <Label Name="LabelXML" Content="Missing XML file" Foreground="#FFFF0000" HorizontalContentAlignment="Center" Background="Black" />
             </StackPanel>
             <Grid Grid.Column="1" Height="200" >
                 <Grid.Resources>

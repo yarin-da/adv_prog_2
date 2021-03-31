@@ -16,35 +16,35 @@ namespace Adv_Prog_2
         public const float MAX_SPEED = 10.0f;
         public const float MIN_SPEED = 0.1f;
 
-        // used for variable sharing between different threads
-        private readonly object FrameLocker = new object();
         private readonly object TimerLocker = new object();
 
-        private int currFrame = 0;
-        private int frameCount = 0;
-        private string[] frames = null;
-        private float timeSlider = 0;
         private string timerString = "00:00:00";
         private float speed = DEFAULT_SPEED;
         private string speedString = "1";
         private bool isPlaying = false;
+        private int frameCount = 0;
         private INetClient netClient;
+        private IFileIterator fileIterator;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public FlightSimPlayer(INetClient netClient)
+        public FlightSimPlayer(INetClient netClient, IFileIterator fileIterator)
         {
             this.netClient = netClient;
+            this.fileIterator = fileIterator;
+        }
+
+        public bool IsPlaying
+        {
+            get { return isPlaying; }
+            set { isPlaying = value; }
         }
 
         public int FrameCount
         {
             get { return frameCount; }
-            set { 
-                if (value >= 0)
-                {
-                    frameCount = value;
-                    NotifyPropertyChanged("FrameCount");
-                }
+            set {
+                frameCount = value;
+                NotifyPropertyChanged("FrameCount");
             }
         }
 
@@ -91,21 +91,12 @@ namespace Adv_Prog_2
             }
         }
         public int Frame { 
-            get { 
-                lock (FrameLocker)
-                {
-                    return currFrame;
-                }
+            get {
+                return fileIterator.LineNumber;
             } 
             set {
-                lock (FrameLocker)
-                {
-                    if (value >= 0 && frames != null && value < frames.Length)
-                    {
-                        currFrame = value;
-                        NotifyPropertyChanged("Frame");
-                    }
-                }
+                fileIterator.LineNumber = value;
+                NotifyPropertyChanged("Frame");
             }
         }
 
@@ -121,15 +112,14 @@ namespace Adv_Prog_2
                 t.Hours, t.Minutes, t.Seconds);
         }
 
-        public void SetFlightDataFile(string filePath)
+        public void LoadFile(string filePath)
         {
-            // read the CSV file into frames (each cell is a whole line)
-            frames = System.IO.File.ReadAllLines(filePath);
+            fileIterator.LoadFile(filePath);
             // do not auto play the simulation as we read a new file
-            isPlaying = false;
+            IsPlaying = false;
             // set the playback to the beginning of the simulation
             Frame = 0;
-            FrameCount = frames.Length;
+            FrameCount = fileIterator.LineCount;
         }
 
         public void Stop()
@@ -140,33 +130,31 @@ namespace Adv_Prog_2
         }
         public void Pause()
         {
-            isPlaying = false;
+            IsPlaying = false;
         }
 
         private void SimulationLoop()
         {
-            while (isPlaying)
+            while (IsPlaying)
             {
                 if (Frame >= FrameCount)
                 {
                     // exit the simulation loop if there are no frames left
-                    isPlaying = false;
+                    IsPlaying = false;
                 }
                 else
                 {
                     try
                     {
                         UpdateTimerString();
-                        netClient.Send(frames[Frame]);
-                        // sleep a variable amount of ms (according to the value of speed)
-                        int ms = (int)(SECOND_MS / (DEFAULT_FPS * speed));
-                        Thread.Sleep(ms);
+                        netClient.Send(fileIterator.CurrentLine);
+                        Sleep();
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        isPlaying = false;
+                        IsPlaying = false;
                         netClient.Disconnect();
-                        Console.WriteLine(e);
+                        Console.WriteLine(ex);
                     }
                     // move to the next frame
                     Frame++;
@@ -174,11 +162,18 @@ namespace Adv_Prog_2
             }
         }
 
+        public void Sleep()
+        {
+            // sleep a variable amount of ms (according to the value of speed)
+            int ms = (int)(SECOND_MS / (DEFAULT_FPS * speed));
+            Thread.Sleep(ms);
+        }
+
         public void Play()
         {
-            if (frames != null && !isPlaying)
+            if (!IsPlaying)
             {
-                isPlaying = true;
+                IsPlaying = true;
                 // send the frames in a different thread
                 // otherwise the GUI is unresponsive
                 new Thread(SimulationLoop).Start();

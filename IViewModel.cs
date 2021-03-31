@@ -25,5 +25,7 @@ namespace Adv_Prog_2
         public void Stop();
 
         public void SetFlightData(string filePath);
+
+        public void SetColumnData(string filePath);
     }
 }
