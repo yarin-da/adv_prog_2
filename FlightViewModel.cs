@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 
 namespace Adv_Prog_2
 {
@@ -19,6 +23,15 @@ namespace Adv_Prog_2
                     NotifyPropertyChanged("VM_" + e.PropertyName);
                 };
         }
+
+        public PlotModel VM_SelectedPlot { get { return model.SelectedPlot; } }
+        public PlotModel VM_CorrelatedPlot { get { return model.CorrelatedPlot; } }
+
+        public string VM_SelectedColumn { 
+            get { return model.SelectedColumn; } 
+            set { model.SelectedColumn = value; }
+        }
+        public List<string> VM_ColumnList { get { return model.ColumnList; } }
 
         public int VM_Frame {
             get { return model.Frame; }

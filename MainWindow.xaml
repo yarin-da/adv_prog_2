@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Adv_Prog_2"
+        xmlns:local="clr-namespace:Adv_Prog_2" 
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1080">
-    <DockPanel LastChildFill="False">
-        <Label Content="{Binding VM_TestXML}" Foreground="#FFFF0000" Background="Black" />
+    <DockPanel LastChildFill="True" >
         <!-- Load Files, Connect, Media Controls -->
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
@@ -17,17 +17,19 @@
             <StackPanel Grid.Column="0">
                 <!-- Load Files, Connect, Help -->
                 <StackPanel Orientation="Horizontal">
-                    <Label Width="50" >Server</Label>
+                    <Label Width="50" Content="Server" HorizontalContentAlignment="Center" />
                     <TextBox Width="150" Name="ServerTextBox" Text="127.0.0.1" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <Label Width="50" >Port</Label>
+                    <Label Width="50" Content="Port" HorizontalContentAlignment="Center" />
                     <TextBox Width="150" Name="PortTextBox" Text="5400" />
                 </StackPanel>
+                <!-- Setup buttons -->
                 <Button Name="ButtonConnect" Content="Connect" Click="ConnectToServer" />
                 <Button Name="ButtonCSV" Content="Upload CSV file" Click="UploadFlightData" />
                 <Button Name="ButtonXML" Content="Upload XML file" Click="UploadColumnData" />
                 <Button Name="ButtonHelp" Content="Help" Click="Help" />
+                <!-- Status labels -->
                 <Label Name="LabelConnection" Content="Not Connected" Foreground="#FFFF0000" HorizontalContentAlignment="Center" Background="Black" />
                 <Label Name="LabelCSV" Content="Missing CSV file" Foreground="#FFFF0000" HorizontalContentAlignment="Center" Background="Black" />
                 <Label Name="LabelXML" Content="Missing XML file" Foreground="#FFFF0000" HorizontalContentAlignment="Center" Background="Black" />
@@ -53,6 +55,7 @@
                         <ColumnDefinition Width="100" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions >
+                    <!-- media control buttons -->
                     <Grid Grid.Column="1" Margin="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -128,6 +131,36 @@
                 </Grid>
                 <!-- Simulation progress slider (time passed) -->
                 <Slider Name="TimeSlider" Value="{Binding VM_Frame, Mode=TwoWay}" Grid.Row="1" VerticalAlignment="Center" Minimum="0" Maximum="{Binding VM_FrameCount}" Margin="40,0,10,0" Grid.ColumnSpan="2" />
+            </Grid>
+        </Grid>
+        <!-- Graph Panel -->
+        <Grid DockPanel.Dock="Left">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <!-- Column list (shown after xml file is loaded) -->
+            <ListBox 
+                Grid.Column="0"
+                ItemsSource="{Binding VM_ColumnList}" 
+                SelectedItem="{Binding VM_SelectedColumn, Mode=TwoWay}" />
+            <!-- All Graphs (2 at the top, a big one at the bottom) -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions >
+                <!-- 2 graphs at the top -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <oxy:PlotView Grid.Column="0" Model="{Binding VM_SelectedPlot}" />
+                    <oxy:PlotView Grid.Column="1" Model="{Binding VM_CorrelatedPlot}" />
+                </Grid>
+                <!-- bottom graph -->
+                <oxy:PlotView Grid.Row="1" Model="{Binding VM_AnomalyPlot}" />
             </Grid>
         </Grid>
     </DockPanel>
