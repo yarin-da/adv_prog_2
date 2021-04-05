@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using static Adv_Prog_2.IFileIterator;
 
 namespace Adv_Prog_2
 {
     class FlightDataIterator : IFileIterator
     {
+        // mutex because LineNumber can be accessed from multiple threads
         private readonly object LineNumberLocker = new object();
+
         private int lineNum = 0;
         private string[] lines;
+        
+        // notify all listeners when line was changed
+        public event CallbackFunc OnLineChanged;
 
         public void LoadFile(string filePath)
         {
@@ -17,17 +20,19 @@ namespace Adv_Prog_2
         }
 
         public bool HasNext { 
-            get { 
+            get 
+            { 
                 if (lines == null)
                 {
                     return false;
                 }
-                return LineNumber < lines.Length; 
+                return LineNumber < lines.Length - 1; 
             } 
         }
         
         public string CurrentLine { 
-            get { 
+            get 
+            { 
                 if (lines == null)
                 {
                     return "";
@@ -37,7 +42,8 @@ namespace Adv_Prog_2
         }
 
         public int LineCount { 
-            get {
+            get 
+            {
                 if (lines == null)
                 {
                     return 0;
@@ -47,13 +53,12 @@ namespace Adv_Prog_2
         }
 
         public int LineNumber {
-            get {
-                lock (LineNumberLocker)
-                {
-                    return lineNum;
-                }
+            get 
+            {
+                return lineNum;
             }
-            set {
+            set 
+            {
                 lock (LineNumberLocker)
                 {
                     if (value >= 0 && lines != null && value < LineCount)
@@ -61,6 +66,7 @@ namespace Adv_Prog_2
                         lineNum = value;
                     }
                 }
+                OnLineChangedUpdate();
             }
         }
 
@@ -69,6 +75,14 @@ namespace Adv_Prog_2
             if (LineNumber < LineCount)
             {
                 LineNumber++;
+            }
+        }
+
+        private void OnLineChangedUpdate()
+        {
+            if (OnLineChanged != null)
+            {
+                OnLineChanged.Invoke();
             }
         }
     }
