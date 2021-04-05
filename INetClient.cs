@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Adv_Prog_2
+﻿namespace Adv_Prog_2
 {
     interface INetClient
     {

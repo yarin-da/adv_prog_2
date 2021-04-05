@@ -14,6 +14,9 @@ namespace Adv_Prog_2
             [MarshalAs(UnmanagedType.LPArray)] string[] titles,
             int numOfTitles);
 
+        [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern IntPtr Analysis_Detector(IntPtr ts);
+
         // get the most correlated column to column 'title'
         [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Analysis_GetCorrelatedColumn(
@@ -31,15 +34,22 @@ namespace Adv_Prog_2
         // get the linear regression of column 'title'
         [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Analysis_LinearReg(
-            IntPtr ts, 
+            IntPtr detector, 
             [MarshalAs(UnmanagedType.LPStr)] string title, 
             ref float a,
             ref float b);
+
+        [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Analysis_DestroyTimeSeries(IntPtr ts);
+        
+        [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Analysis_DestroyDetector(IntPtr detector);
 
 
         private string csvFileName = null;
         private string[] titles = null;
         private IntPtr timeseries = IntPtr.Zero;
+        private IntPtr detector = IntPtr.Zero;
         private StringBuilder buffer;
 
         private bool HasData { get { return titles != null && csvFileName != null; } }
@@ -95,7 +105,7 @@ namespace Adv_Prog_2
                 // read a, b values into x, y
                 float x = 0;
                 float y = 0;
-                Analysis_LinearReg(timeseries, title, ref x, ref y);
+                Analysis_LinearReg(detector, title, ref x, ref y);
                 // update the parameters
                 a = x;
                 b = y;
@@ -138,7 +148,25 @@ namespace Adv_Prog_2
 
         private void LoadTimeSeries()
         {
+            // destroy resources if they're already loaded
+            DestroyResources();
+            // load new resources
             timeseries = Analysis_TimeSeries(csvFileName, titles, titles.Length);
+            detector = Analysis_Detector(timeseries);
+        }
+
+        public void DestroyResources()
+        {
+            if (detector != IntPtr.Zero)
+            {
+                Analysis_DestroyDetector(detector);
+                detector = IntPtr.Zero;
+            }
+            if (timeseries != IntPtr.Zero)
+            {
+                Analysis_DestroyTimeSeries(timeseries);
+                timeseries = IntPtr.Zero;
+            }
         }
     }
 }
