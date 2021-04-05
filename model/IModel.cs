@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
+using OxyPlot;
 
 namespace Adv_Prog_2
 {
     interface IModel : INotifyPropertyChanged
     {
+        public List<string> ColumnList { get; }
+        public PlotModel SelectedPlot { get; }
+        public PlotModel CorrelatedPlot { get; }
+        public PlotModel AnomalyPlot { get; }
+        public string SelectedColumn { get; set; }
         public bool IsConnected { get; }
         public void Connect(int port, string server);
         public void Disconnect();
-        public void Send(string data);
         public int FrameCount { get; set; }
         public string TimerString { get; set; }
         public string SpeedString { get; set; }
@@ -21,5 +24,6 @@ namespace Adv_Prog_2
         public void Stop();
         public void SetFlightDataFile(string filePath);
         public void SetColumnData(string filePath);
+        public void CloseApplication();
     }
 }

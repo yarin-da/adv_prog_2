@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,13 +18,23 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\playback-beginning.png" />
-    <Resource Include="Resources\playback-end.png" />
-    <Resource Include="Resources\playback-fast-forward.png" />
-    <Resource Include="Resources\playback-pause.png" />
-    <Resource Include="Resources\playback-play.png" />
-    <Resource Include="Resources\playback-rewind.png" />
-    <Resource Include="Resources\playback-stop.png" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="StatisticAnalysis">
+      <HintPath>..\StatisticAnalysis\Debug\StatisticAnalysis.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\icons\playback-beginning.png" />
+    <Resource Include="Resources\icons\playback-end.png" />
+    <Resource Include="Resources\icons\playback-fast-forward.png" />
+    <Resource Include="Resources\icons\playback-pause.png" />
+    <Resource Include="Resources\icons\playback-play.png" />
+    <Resource Include="Resources\icons\playback-rewind.png" />
+    <Resource Include="Resources\icons\playback-stop.png" />
   </ItemGroup>
 
 </Project>

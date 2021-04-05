@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
+using OxyPlot;
 
 namespace Adv_Prog_2
 {
     interface IViewModel : INotifyPropertyChanged
     {
+        public List<string> VM_ColumnList { get; }
+        public PlotModel VM_SelectedPlot { get; }
+        public PlotModel VM_CorrelatedPlot { get; }
+        public PlotModel VM_AnomalyPlot { get; }
+        public string VM_SelectedColumn { get; set; }
         public int VM_FrameCount { get; set; }
         public int VM_Frame { get; set; }
         public string VM_TimerString { get; set; }
@@ -27,5 +31,7 @@ namespace Adv_Prog_2
         public void SetFlightData(string filePath);
 
         public void SetColumnData(string filePath);
+
+        public void CloseApplication();
     }
 }

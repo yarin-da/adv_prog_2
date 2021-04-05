@@ -1,25 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Microsoft.Win32;
 
 namespace Adv_Prog_2
 {
-    /// <summary>
-    /// View Code
-    /// </summary>
     public partial class MainWindow : Window
     {
         // constants
@@ -54,9 +40,14 @@ namespace Adv_Prog_2
                     LabelConnection.Content = "Connection Established";
                     LabelConnection.Foreground = green;
                 }
-                catch (Exception ex) { LabelConnection.Content = "Connection Failed!"; }
+                catch (Exception ex) 
+                { 
+                    LabelConnection.Content = "Connection Failed!";
+                    Console.WriteLine(ex);
+                }
             }
-            else {
+            else 
+            {
                 // update the GUI to notify the user that we're disconnected
                 vm.Disconnect();
                 ButtonConnect.Content = "Connect";
@@ -71,6 +62,17 @@ namespace Adv_Prog_2
             {
                 // update the speed when the user changes it from the textbox
                 float speed = float.Parse(SpeedTextBox.Text);
+                // clamp values
+                if (speed > FlightSimPlayer.MAX_SPEED)
+                {
+                    speed = FlightSimPlayer.MAX_SPEED;
+                    SpeedTextBox.Text = String.Format("{0:0.0}", speed);
+                } 
+                else if (speed < FlightSimPlayer.MIN_SPEED)
+                {
+                    speed = FlightSimPlayer.MIN_SPEED;
+                    SpeedTextBox.Text = String.Format("{0:0.0}", speed);
+                }
                 vm.VM_Speed = speed;
             }
             catch (Exception ex) { Console.WriteLine(ex); }
@@ -148,6 +150,11 @@ namespace Adv_Prog_2
         public void Stop(object sender, RoutedEventArgs e)
         {
             vm.Stop();
+        }
+
+        public void OnWindowClose(object sender, EventArgs e)
+        {
+            vm.CloseApplication();
         }
     }
 }
