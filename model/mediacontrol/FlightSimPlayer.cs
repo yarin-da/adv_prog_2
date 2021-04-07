@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 
 namespace Adv_Prog_2
@@ -9,9 +10,12 @@ namespace Adv_Prog_2
         // constants
         public const int SECOND_MS = 1000;
         public const int DEFAULT_FPS = 10;
+        public const int DEFAULT_SLEEP_MS = 100;
         public const float DEFAULT_SPEED = 1.0f;
         public const float MAX_SPEED = 10.0f;
         public const float MIN_SPEED = 0.0f;
+        public const int FRAME_SKIP = 50;
+        public const float SPEED_SKIP = 0.1f;
 
         // mutex
         private readonly object TimerLocker = new object();
@@ -31,10 +35,7 @@ namespace Adv_Prog_2
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public FlightSimPlayer(INetClient netClient, IFileIterator fileIterator)
@@ -45,6 +46,8 @@ namespace Adv_Prog_2
             fileIterator.OnLineChanged += UpdateTimerString;
             fileIterator.OnLineChanged += Sleep;
         }
+
+        #region Properties
 
         public bool IsPlaying
         {
@@ -86,14 +89,24 @@ namespace Adv_Prog_2
             get { return speedString; }
             set
             {
-                try
+                // update speed, speedString and notify
+                float parsedSpeed;
+                if (float.TryParse(value, out parsedSpeed))
                 {
-                    // update speed, speedString and notify
-                    float f = float.Parse(value);
-                    speed = f;
-                    speedString = value;
+                    Trace.WriteLine(parsedSpeed);
+                    // clamp values
+                    if (parsedSpeed > MAX_SPEED)
+                    {
+                        parsedSpeed = MAX_SPEED;
+                    }
+                    else if (parsedSpeed < MIN_SPEED)
+                    {
+                        parsedSpeed = MIN_SPEED;
+                    }
+                    speedString = String.Format("{0:0.0}", parsedSpeed);
+                    Speed = parsedSpeed;
                     NotifyPropertyChanged("SpeedString");
-                } catch (Exception ex) { Console.WriteLine(ex); }
+                }
             }
         }
 
@@ -123,6 +136,10 @@ namespace Adv_Prog_2
             }
         }
 
+        #endregion
+
+        #region SimulationLoop
+
         public void UpdateTimerString()
         {
             if (speed > 0)
@@ -138,25 +155,14 @@ namespace Adv_Prog_2
             }
         }
 
-        public void LoadFile(string filePath)
+        public void Sleep()
         {
-            fileIterator.LoadFile(filePath);
-            // do not auto play the simulation as we read a new file
-            IsPlaying = false;
-            // set the playback to the beginning of the simulation
-            Frame = 0;
-            FrameCount = fileIterator.LineCount;
-        }
-
-        public void Stop()
-        {
-            Pause();
-            // return to the beginning of the simulation
-            Frame = 0;
-        }
-        public void Pause()
-        {
-            IsPlaying = false;
+            if (IsPlaying && speed > 0)
+            {
+                // sleep a variable amount of ms (according to the value of speed)
+                int ms = (int)(SECOND_MS / (DEFAULT_FPS * speed));
+                Thread.Sleep(ms);
+            }
         }
 
         private void SendCurrentFrame()
@@ -179,7 +185,7 @@ namespace Adv_Prog_2
                 else
                 {
                     // if speed == 0 then we want to simply sleep and not update the server
-                    Thread.Sleep(100);
+                    Thread.Sleep(DEFAULT_SLEEP_MS);
                 }
             }
 
@@ -189,15 +195,9 @@ namespace Adv_Prog_2
             }
         }
 
-        public void Sleep()
-        {
-            if (IsPlaying && speed > 0)
-            {
-                // sleep a variable amount of ms (according to the value of speed)
-                int ms = (int)(SECOND_MS / (DEFAULT_FPS * speed));
-                Thread.Sleep(ms);
-            }
-        }
+        #endregion
+
+        #region media_controls
 
         public void Play()
         {
@@ -210,6 +210,63 @@ namespace Adv_Prog_2
                 simulationThread.IsBackground = true;
                 simulationThread.Start();
             }
+        }
+
+        public void Stop()
+        {
+            Pause();
+            // return to the beginning of the simulation
+            Frame = 0;
+        }
+
+        public void Pause()
+        {
+            IsPlaying = false;
+        }
+
+        public void FastForward()
+        {
+            Speed += SPEED_SKIP;
+        }
+
+        public void FastBackwards()
+        {
+            Speed -= SPEED_SKIP;
+        }
+
+        public void FrameForward()
+        {
+            if (Frame + FRAME_SKIP > FrameCount)
+            {
+                Frame = FrameCount - 1;
+            }
+            else {
+                Frame += FRAME_SKIP;
+            }
+        }
+
+        public void FrameBackwards()
+        {
+            if (Frame - FRAME_SKIP < 0)
+            {
+                Frame = 0;
+            }
+            else
+            {
+                Frame -= FRAME_SKIP;
+            }
+        }
+
+        #endregion
+
+        public void LoadFile(string filePath)
+        {
+            fileIterator.LoadFile(filePath);
+            // do not auto play the simulation as we read a new file
+            IsPlaying = false;
+            // set the playback to the beginning of the simulation
+            Frame = 0;
+            FrameCount = fileIterator.LineCount;
         }
     }
 }

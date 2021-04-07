@@ -80,10 +80,7 @@ namespace Adv_Prog_2
 
         private void OnLineChangedUpdate()
         {
-            if (OnLineChanged != null)
-            {
-                OnLineChanged.Invoke();
-            }
+            OnLineChanged?.Invoke();
         }
     }
 }

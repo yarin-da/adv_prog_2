@@ -56,7 +56,7 @@ namespace Adv_Prog_2
 
         public DataAnalyzer()
         {
-            const int BUFFER_SIZE = 512;
+            const int BUFFER_SIZE = 1024;
             buffer = new StringBuilder(BUFFER_SIZE);
         }
 

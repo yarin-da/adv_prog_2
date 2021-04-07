@@ -19,6 +19,42 @@ namespace Adv_Prog_2
             titles = ParseXML(filePath);
         }
 
+        private int Count(List<string> list, string toCount)
+        {
+            int counter = 0;
+            foreach (string str in list)
+            {
+                if (str == toCount) { counter++; }
+            }
+            return counter;
+        }
+
+        private List<string> HandleDuplicates(List<string> titles)
+        {
+            HashSet<string> duplicates = new HashSet<string>();
+            foreach (string title in titles) {
+                if (Count(titles, title) > 1)
+                {
+                    duplicates.Add(title);
+                }
+            }
+
+            foreach (string dup in duplicates)
+            {
+                int counter = 1;
+                for (int i = 0; i < titles.Count; i++)
+                {
+                    if (titles[i] == dup)
+                    {
+                        titles[i] = dup + counter;
+                        counter++;
+                    }
+                }
+            }
+
+            return titles;
+        }
+
         public List<string> ParseXML(string filePath)
         {
             // read XML file into data
@@ -37,7 +73,8 @@ namespace Adv_Prog_2
             {
                 titles.Add(name.Value);
             }
-            return titles;
+
+            return HandleDuplicates(titles);
         }
     }
 }

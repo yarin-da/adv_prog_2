@@ -11,9 +11,15 @@ namespace Adv_Prog_2
         public string SpeedString { get; set; }
         public float Speed { get; set; }
         public int Frame { get; set; }
+
         public void Play();
         public void Pause();
         public void Stop();
+        public void FastForward();
+        public void FastBackwards();
+        public void FrameForward();
+        public void FrameBackwards();
+
         public void LoadFile(string filePath);
     }
 }

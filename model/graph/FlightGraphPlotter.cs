@@ -2,23 +2,22 @@
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using System.Timers;
 
 namespace Adv_Prog_2
 {
     class FlightGraphPlotter : IGraphPlotter
     {
+        public const int UPDATE_INTERVAL_MS = 120;
         private string graphID = "";
         private PlotModel plotModel;
-        private System.Timers.Timer refreshPlotsTimer;
+        private Timer refreshPlotsTimer;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(string property)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
         public PlotModel Plot 
@@ -35,10 +34,8 @@ namespace Adv_Prog_2
         {
             this.graphID = graphID;
             plotModel = new PlotModel();
-            this.refreshPlotsTimer = new System.Timers.Timer();
-            plotModel.Background = OxyColors.Black;
+            this.refreshPlotsTimer = new Timer();
             plotModel.TextColor = OxyColors.White;
-
             // y axis
             plotModel.Axes.Add(new LinearAxis
             {
@@ -84,20 +81,23 @@ namespace Adv_Prog_2
             plotModel.InvalidatePlot(true);
 
             // set the Model property
-            this.Plot = plotModel;
+            Plot = plotModel;
         }
 
         // display linear regression
         public void LoadData(string title, float a, float b)
         {
             plotModel.Series.Clear();
-            FunctionSeries series = new FunctionSeries(x => a * x + b, 0, 1, 0.1, "linear_reg");
+            const float startX = 0.0f;
+            const float endX = 1.0f;
+            const float increment = 0.1f;
+            FunctionSeries series = new FunctionSeries(x => a * x + b, startX, endX, increment, "linear_reg");
             plotModel.Series.Add(series);
             plotModel.InvalidatePlot(true);
             // y axis
             plotModel.Axes[0].TextColor = OxyColors.White;
             plotModel.Axes[0].LabelFormatter = null;
-            this.Plot = plotModel;
+            Plot = plotModel;
         }
 
         public void SetDataCallback(string title, IFileIterator iterator, DataAnalyzer statistics)
@@ -113,28 +113,27 @@ namespace Adv_Prog_2
                 };
 
             // get rid of the previous timer
-            this.refreshPlotsTimer.Stop();
-            this.refreshPlotsTimer.Close();
+            refreshPlotsTimer.Stop();
+            refreshPlotsTimer.Close();
 
             // initialize a new timer
-            const int UPDATE_INTERVAL = 250;
-            this.refreshPlotsTimer = new System.Timers.Timer();
-            this.refreshPlotsTimer.Interval = UPDATE_INTERVAL;
+            refreshPlotsTimer = new Timer();
+            refreshPlotsTimer.Interval = UPDATE_INTERVAL_MS;
 
             // call func every UPDATE_INTERVAL milliseconds
-            this.refreshPlotsTimer.Elapsed += func;
+            refreshPlotsTimer.Elapsed += func;
 
             StartCallbackTimer();
         }
 
         public void StopCallbackTimer()
         {
-            this.refreshPlotsTimer.Stop();
+            refreshPlotsTimer.Stop();
         }
 
         public void StartCallbackTimer()
         {
-            this.refreshPlotsTimer.Start();
+            refreshPlotsTimer.Start();
         }
     }
 }
