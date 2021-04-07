@@ -1,24 +1,24 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using Adv_Prog_2.model.joystick;
 
 namespace Adv_Prog_2
 {
     class FlightJoystick : IJoystick
     {
-        private const int JOYSTICK_RADIUS = 60;
-        private const int KNOB_RADIUS = 30;
-        private float knobX = 30;
-        private float knobY = 30;
+        private const int JOYSTICK_SIZE = 120;
+        private float padRadius;
+        private float knobRadius;
+        private float knobX;
+        private float knobY;
+        private float center;
         private IFileIterator fileIterator;
         private DataAnalyzer dataAnalyzer;
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string property)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
 
         public FlightJoystick(IFileIterator fileIterator, DataAnalyzer dataAnalyzer)
@@ -26,7 +26,14 @@ namespace Adv_Prog_2
             this.fileIterator = fileIterator;
             this.dataAnalyzer = dataAnalyzer;
 
-            fileIterator.OnLineChanged += UpdateKnobPosition;
+            // reposition the knob when we read new data
+            fileIterator.OnLineChanged += Update;
+
+            // init size and position
+            padRadius = JOYSTICK_SIZE / 2;
+            knobRadius = padRadius / 2;
+            center = padRadius - knobRadius;
+            knobX = knobY = center;
         }
 
         public float KnobX { 
@@ -46,30 +53,43 @@ namespace Adv_Prog_2
             }
         }
 
-        public void UpdateKnobPosition()
+        private void UpdateKnobPosition()
         {
             int lineNumber = fileIterator.LineNumber;
             float aileron = dataAnalyzer.GetValue("aileron", lineNumber);
             float elevator = dataAnalyzer.GetValue("elevator", lineNumber);
 
-            // float throttle = statistics.GetValue("throttle", lineNumber); // [0,1]
-            // float rudder = statistics.GetValue("rudder", lineNumber); // [0,1]?
-            const float VALUE_RANGE = JOYSTICK_RADIUS - KNOB_RADIUS; 
+            float valueRange = padRadius - knobRadius; 
 
-            KnobX = TranslateX(VALUE_RANGE * aileron);
+            KnobX = (valueRange * aileron) + center;
             // multiply by -1 because we want the knob to be drawn higher as y grows
-            KnobY = TranslateY(-1 * VALUE_RANGE * elevator);
+            KnobY = (-1 * valueRange * elevator) + center;
         }
 
-        private float TranslateX(float x)
+        public void UpdateSliders()
         {
-            const int CENTER_X = JOYSTICK_RADIUS - KNOB_RADIUS;
-            return x + CENTER_X;
+            int lineNumber = fileIterator.LineNumber;
+            Throttle1 = dataAnalyzer.GetValue("throttle1", lineNumber);
+            Throttle2 = dataAnalyzer.GetValue("throttle2", lineNumber);
+            Rudder = dataAnalyzer.GetValue("rudder", lineNumber);
+
+            NotifyPropertyChanged("Throttle1");
+            NotifyPropertyChanged("Throttle2");
+            NotifyPropertyChanged("Rudder");
         }
-        private float TranslateY(float y)
+
+        public float MaxThrottle { get; private set; } = 1;
+        public float MinThrottle { get; private set; } = 0;
+        public float Throttle1 { get; private set; } = 0;
+        public float Throttle2 { get; private set; } = 0;
+        public float MaxRudder { get; private set; } = 1;
+        public float MinRudder { get; private set; } = -1;
+        public float Rudder { get; private set; } = -1;
+
+        private void Update()
         {
-            const int CENTER_Y = JOYSTICK_RADIUS - KNOB_RADIUS;
-            return y + CENTER_Y;
+            UpdateKnobPosition();
+            UpdateSliders();
         }
     }
 }
