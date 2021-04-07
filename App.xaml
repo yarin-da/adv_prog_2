@@ -4,6 +4,13 @@
              xmlns:local="clr-namespace:Adv_Prog_2"
              StartupUri="view\MainWindow.xaml">
     <Application.Resources>
-        
+        <ResourceDictionary>
+            <!-- Load resources -->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles/Colors.xaml" />
+                <ResourceDictionary Source="Styles/Fonts.xaml" />
+                <ResourceDictionary Source="Styles/Styling.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

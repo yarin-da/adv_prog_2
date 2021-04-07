@@ -7,7 +7,48 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="view\DashboardPanel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\GraphPanel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\JoystickPanel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\MediaControlPanel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="view\SessionSetupPanel.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="styles\Fonts.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="styles\Styling.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="styles\Colors.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\DashboardPanel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\GraphPanel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\JoystickPanel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="view\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\MediaControlPanel.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="view\SessionSetupPanel.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

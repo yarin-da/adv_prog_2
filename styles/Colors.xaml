@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Adv_Prog_2">
+
+    <Color x:Key="BlackenedGray">#121212</Color>
+    <SolidColorBrush x:Key="BlackenedGrayBrush" Color="{StaticResource BlackenedGray}" />
+
+    <Color x:Key="PanelBorder">#d6c9b5</Color>
+    <SolidColorBrush x:Key="PanelBorderBrush" Color="{StaticResource PanelBorder}" />
+
+    <Color x:Key="LabelBackground">#d6c9b5</Color>
+    <SolidColorBrush x:Key="LabelBackgroundBrush" Color="{StaticResource LabelBackground}" />
+
+    <Color x:Key="LabelForeground">#297795</Color>
+    <SolidColorBrush x:Key="LabelForegroundBrush" Color="{StaticResource LabelForeground}" />
+
+    <SolidColorBrush x:Key="MediaPanelBackgroundBrush" Color="{StaticResource BlackenedGray}" />
+
+    <Color x:Key="MediaLabelForeground">#00aacc</Color>
+    <SolidColorBrush x:Key="MediaLabelForegroundBrush" Color="{StaticResource MediaLabelForeground}" />
+
+    <Color x:Key="MediaButtonBackground">#297795</Color>
+    <SolidColorBrush x:Key="MediaButtonBackgroundBrush" Color="{StaticResource MediaButtonBackground}" />
+
+    <Color x:Key="MediaButtonBackgroundHover">#3a88a6</Color>
+    <SolidColorBrush x:Key="MediaButtonBackgroundHoverBrush" Color="{StaticResource MediaButtonBackgroundHover}" />
+
+    <Color x:Key="MediaButtonBorder">#99aabb</Color>
+    <SolidColorBrush x:Key="MediaButtonBorderBrush" Color="{StaticResource MediaButtonBorder}" />
+
+    <SolidColorBrush x:Key="ColumnListBackgroundBrush" Color="Black" />
+
+    <Color x:Key="ColumnListForeground">AliceBlue</Color>
+    <SolidColorBrush x:Key="ColumnListForegroundBrush" Color="{StaticResource ColumnListForeground}" />
+
+    <SolidColorBrush x:Key="GraphBackgroundBrush" Color="Black" />
+
+    <Color x:Key="GraphForeground">AliceBlue</Color>
+    <SolidColorBrush x:Key="GraphForegroundBrush" Color="{StaticResource GraphForeground}" />
+
+    <Color x:Key="TextBoxBackground">#36474e</Color>
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource TextBoxBackground}" />
+
+    <Color x:Key="TextBoxForeground">AliceBlue</Color>
+    <SolidColorBrush x:Key="TextBoxForegroundBrush" Color="{StaticResource TextBoxForeground}" />
+
+    <SolidColorBrush x:Key="MainWindowBackgroundBrush" Color="{StaticResource BlackenedGray}" />
+
+    <SolidColorBrush x:Key="DashboardLabelForegroundBrush" Color="#fff" />
+    <SolidColorBrush x:Key="DashboardBorderBrush" Color="#fff" />
+</ResourceDictionary>

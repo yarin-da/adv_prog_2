@@ -3,206 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Adv_Prog_2" 
-        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:local="clr-namespace:Adv_Prog_2"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1080"
         Closed="OnWindowClose">
 
     <!-- Main Window -->
-    <DockPanel Background="#000">
+    <DockPanel Background="{StaticResource MainWindowBackgroundBrush}">
         <!-- Load Files, Connect, Media Controls -->
         <Grid DockPanel.Dock="Bottom">
-            <Grid.Resources>
-                <Style TargetType="TextBox">
-                    <Setter Property="Background" Value="#000"/>
-                    <Setter Property="Foreground" Value="#fff"/>
-                </Style>
-                <Style TargetType="Label">
-                    <Setter Property="Background" Value="#000"/>
-                    <Setter Property="Foreground" Value="#fff"/>
-                </Style>
-            </Grid.Resources>
-            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
+            
             <!-- Buttons and Labels -->
-            <StackPanel Grid.Column="0">
-                <StackPanel.Resources>
-                    <Style TargetType="Label">
-                        <Setter Property="Background" Value="#000"/>
-                        <Setter Property="Foreground" Value="#fff"/>
-                    </Style>
-                </StackPanel.Resources>
-                
-                <!-- Load Files, Connect, Help -->
-                <StackPanel Orientation="Horizontal">
-                    <Label Width="50" Content="Server" HorizontalContentAlignment="Center" />
-                    <TextBox Width="150" Name="ServerTextBox" Text="127.0.0.1" />
-                </StackPanel>
+            <local:SessionSetupPanel Grid.Column="0" />
 
-                <StackPanel Orientation="Horizontal">
-                    <Label Width="50" Content="Port" HorizontalContentAlignment="Center" />
-                    <TextBox Width="150" Name="PortTextBox" Text="5400" />
-                </StackPanel>
-                                
-                <!-- Setup buttons -->
-                <Button Name="ButtonConnect" Content="Connect" Click="ConnectToServer" />
-                <Button Name="ButtonCSV" Content="Upload CSV file" Click="UploadFlightData" />
-                <Button Name="ButtonXML" Content="Upload XML file" Click="UploadColumnData" />
-                <Button Name="ButtonHelp" Content="Help" Click="Help" />
-
-                <!-- Status labels -->
-                <Label Name="LabelConnection" Content="Not Connected" Foreground="#FFFF0000" HorizontalContentAlignment="Center" />
-                <Label Name="LabelCSV" Content="Missing CSV file" Foreground="#FFFF0000" HorizontalContentAlignment="Center" />
-                <Label Name="LabelXML" Content="Missing XML file" Foreground="#FFFF0000" HorizontalContentAlignment="Center" />
-            </StackPanel>
-
-            <!-- Media Control and Slider -->
-            <Grid Grid.Column="1" Height="200" >
-                <Grid.Resources>
-                    <Style TargetType="Button">
-                        <Setter Property="Margin" Value="1"/>
-                        <Setter Property="Background" Value="#777"/>
-                    </Style>
-                </Grid.Resources>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions >
-                <Grid Margin="25" Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="3*" />
-                        <ColumnDefinition Width="100" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions >
-                    <!-- media control buttons -->
-                    <Grid Grid.Column="1" Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions >
-                        <Button Grid.Column="0" Click="SkipBackwards">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                            <Image Source="..\Resources\icons\playback-beginning.png"/>
-                        </Button>
-                        <Button Grid.Column="1" Click="ReducePlaybackSpeed">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                            <Image Source="..\Resources\icons\playback-rewind.png" />
-                        </Button>
-                        <Button Grid.Column="2" Click="Play">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                            <Image Source="..\Resources\icons\playback-play.png" />
-                        </Button>
-                        <Button Grid.Column="3" Click="Pause">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                            <Image Source="..\Resources\icons\playback-pause.png" />
-                        </Button>
-                        <Button Grid.Column="4" Click="Stop">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                            <Image Source="..\Resources\icons\playback-stop.png" />
-                        </Button>
-                        <Button Grid.Column="5" Click="IncreasePlaybackSpeed">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                            <Image Source="..\Resources\icons\playback-fast-forward.png" />
-                        </Button>
-                        <Button Grid.Column="6" Click="SkipForward">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="5"/>
-                                </Style>
-                            </Button.Resources>
-                            <Image Source="..\Resources\icons\playback-end.png" />
-                        </Button>
-                    </Grid>
-
-                    <!-- Speed Label and TextBox -->
-                    <StackPanel Grid.Column="2" Orientation="Horizontal">
-                        <Label VerticalAlignment="Center" HorizontalAlignment="Center" Content="Play Speed" />
-                        <TextBox Name="SpeedTextBox" TextChanged="UpdateSpeed" Width="30" Text="{Binding VM_SpeedString}" VerticalContentAlignment="center" HorizontalContentAlignment="center"></TextBox>
-                    </StackPanel>
-
-                    <!-- Time Elapsed Timer -->
-                    <Label Width="75" FontSize="18" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="4" Content="{Binding VM_TimerString}" />
-                </Grid>
-
-                <!-- Simulation progress slider (time passed) -->
-                <Slider Name="TimeSlider" Value="{Binding VM_Frame, Mode=TwoWay}" Grid.Row="1" VerticalAlignment="Center" Minimum="0" Maximum="{Binding VM_FrameCount}" Margin="40,0,10,0" Grid.ColumnSpan="2" />
-            </Grid>
+            <!-- Media Controls (buttons, speed textbox and slider) -->
+            <local:MediaControlPanel 
+                Grid.Column="1"
+                Background="{StaticResource MediaPanelBackgroundBrush}" />
         </Grid>
+        <!-- Graph Panel (and a listbox of column titles) -->
+        <local:GraphPanel DockPanel.Dock="Left" MinWidth="500"/>
+        
+        <!-- Joystick Panel -->
+        <local:JoystickPanel DockPanel.Dock="Right" MaxWidth="300"/>
 
-        <!-- Graph Panel (2 small graphs at the top and a big one at the bottom) -->
-        <Grid DockPanel.Dock="Left">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="2*" />
-            </Grid.ColumnDefinitions>
-
-            <!-- Column list (shown after xml file is loaded) -->
-            <ListBox 
-                Grid.Column="0"
-                Background="#000"
-                Foreground="#fff"
-                ItemsSource="{Binding VM_ColumnList}" 
-                SelectedItem="{Binding VM_SelectedColumn, Mode=TwoWay}" />
-
-            <!-- All Graphs (2 at the top, a big one at the bottom) -->
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="2*" />
-                </Grid.RowDefinitions >
-
-                <!-- 2 graphs at the top -->
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <oxy:PlotView Grid.Column="0" Background="#000" Model="{Binding VM_SelectedPlot}" />
-                    <oxy:PlotView Grid.Column="1" Background="#000" Model="{Binding VM_CorrelatedPlot}" />
-                </Grid>
-
-                <!-- bottom graph -->
-                <oxy:PlotView Grid.Row="1" Background="#000" Model="{Binding VM_AnomalyPlot}" />
-            </Grid>
-        </Grid>
+        <local:DashboardPanel MaxWidth="300"/>
     </DockPanel>
 </Window>

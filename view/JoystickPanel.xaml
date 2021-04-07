@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="Adv_Prog_2.JoystickPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <!-- Joystick Panel with sliders -->
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Throttle1" Foreground="#fff" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="270" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+                <ProgressBar 
+                    Orientation="Vertical" 
+                    HorizontalAlignment="Center"
+                    Margin="5 20 5 20"
+                    MinWidth="10"
+                    Focusable="False"
+                    Minimum="{Binding VM_MinThrottle, Mode=OneWay}"
+                    Maximum="{Binding VM_MaxThrottle, Mode=OneWay}"
+                    Value="{Binding VM_Throttle1, Mode=OneWay}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Throttle2" Foreground="#fff" VerticalAlignment="Center">
+                    <TextBlock.LayoutTransform>
+                        <RotateTransform Angle="270" />
+                    </TextBlock.LayoutTransform>
+                </TextBlock>
+                <ProgressBar 
+                    Orientation="Vertical" 
+                    HorizontalAlignment="Center"
+                    MinWidth="10"
+                    Margin="5 20 5 20"
+                    Focusable="False"
+                    Minimum="{Binding VM_MinThrottle, Mode=OneWay}"
+                    Maximum="{Binding VM_MaxThrottle, Mode=OneWay}"
+                    Value="{Binding VM_Throttle2, Mode=OneWay}"/>
+            </StackPanel>
+        </StackPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Margin="10" Width="120" Height="120">
+                <Canvas>
+                    <Ellipse 
+                        Fill="#233" 
+                        Canvas.Left="0"
+                        Canvas.Top="0" 
+                        Stroke="#566"
+                        StrokeThickness="2"
+                        Height="120" 
+                        Width="120"/>
+                    <Ellipse 
+                        Fill="Beige" 
+                        Canvas.Left="{Binding VM_KnobX, Mode=OneWay}" 
+                        Canvas.Top="{Binding VM_KnobY, Mode=OneWay}" 
+                        Stroke="#fff"
+                        StrokeThickness="2"
+                        Height="60"
+                        Width="60"/>
+                </Canvas>
+            </Border>
+            <StackPanel Grid.Row="1">
+                <TextBlock Text="Rudder" Foreground="#fff" HorizontalAlignment="Center"/>
+                <ProgressBar 
+                    Orientation="Horizontal" 
+                    VerticalAlignment="Center"
+                    Margin="20 10 20 0"
+                    MinHeight="10"
+                    Focusable="False"
+                    Minimum="{Binding VM_MinRudder, Mode=OneWay}"
+                    Maximum="{Binding VM_MaxRudder, Mode=OneWay}"
+                    Value="{Binding VM_Rudder, Mode=OneWay}"/>
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</UserControl>
