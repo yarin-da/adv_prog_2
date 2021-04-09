@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
+using Adv_Prog_2.model;
 
 namespace Adv_Prog_2.viewmodel
 {
@@ -27,7 +26,7 @@ namespace Adv_Prog_2.viewmodel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged(string property)
+        protected void NotifyPropertyChanged(string property)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }

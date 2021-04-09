@@ -13,9 +13,18 @@ namespace Adv_Prog_2
             [MarshalAs(UnmanagedType.LPStr)] string fileName,
             [MarshalAs(UnmanagedType.LPArray)] string[] titles,
             int numOfTitles);
-
+        
+        // create a detector object
         [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern IntPtr Analysis_Detector(IntPtr ts);
+
+        // get the linear regression of column 'title'
+        [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern void Analysis_LinearReg(
+            IntPtr detector,
+            [MarshalAs(UnmanagedType.LPStr)] string title,
+            ref float a,
+            ref float b);
 
         // get the most correlated column to column 'title'
         [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -31,13 +40,15 @@ namespace Adv_Prog_2
             [MarshalAs(UnmanagedType.LPStr)] string title,
             int lineNumber);
 
-        // get the linear regression of column 'title'
         [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void Analysis_LinearReg(
-            IntPtr detector, 
-            [MarshalAs(UnmanagedType.LPStr)] string title, 
-            ref float a,
-            ref float b);
+        private static extern float Analysis_GetMin(
+            IntPtr ts,
+            [MarshalAs(UnmanagedType.LPStr)] string title);
+
+        [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern float Analysis_GetMax(
+            IntPtr ts,
+            [MarshalAs(UnmanagedType.LPStr)] string title);
 
         [DllImport("StatisticAnalysis.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern void Analysis_DestroyTimeSeries(IntPtr ts);
@@ -52,22 +63,30 @@ namespace Adv_Prog_2
         private IntPtr detector = IntPtr.Zero;
         private StringBuilder buffer;
 
+        // determines if we have enough data to create TimeSeries/Detector objects
         private bool HasData { get { return titles != null && csvFileName != null; } }
 
         public DataAnalyzer()
         {
+            // create a buffer large enough to contain every possible feature title
             const int BUFFER_SIZE = 1024;
             buffer = new StringBuilder(BUFFER_SIZE);
         }
 
         // return an array which contains the values of 'title'
         // in the last 'amount' lines sent to the server
-        public float[] GetLastValues(string title, int currLine, int amount)
+        // with the option to skip a few lines everytime
+        // e.g. if skip=4, we'll get the values at lines: X, X+5, X+10, etc.
+        public float[] GetLastValues(string title, int currLine, int amount, int skip)
         {
+            // insert values from the range:
+            // [currLine - amount * (skip + 1) + 1, currLine]
             float[] arr = new float[amount];
-            int lineNum = currLine - amount + 1;
+            // set lineNum to the beginning of the range
+            int lineNum = currLine - amount * (skip + 1) + 1;
             for (int i = 0; i < amount; i++)
             {
+                // if lineNum is too small - enter a default value (0)
                 if (lineNum < 0)
                 {
                     arr[i] = 0;
@@ -76,13 +95,33 @@ namespace Adv_Prog_2
                 {
                     arr[i] = GetValue(title, lineNum);
                 }
-                lineNum++;
+                // advance by skipping 'skip' amount of lines
+                lineNum = lineNum + skip + 1;
             }
             return arr;
         }
 
+        public float GetMin(string feature)
+        {
+            if (timeseries != IntPtr.Zero)
+            {
+                return Analysis_GetMin(timeseries, feature);
+            }
+            return 0;
+        }
+
+        public float GetMax(string feature)
+        {
+            if (timeseries != IntPtr.Zero)
+            {
+                return Analysis_GetMax(timeseries, feature);
+            }
+            return 0;
+        }
+
         public float GetValue(string title, int index)
         {
+            // return a default value (0) if we're missing data
             if (timeseries == IntPtr.Zero || String.IsNullOrEmpty(title)) { return 0; }
             return Analysis_GetValue(timeseries, title, index);
         }
@@ -91,9 +130,9 @@ namespace Adv_Prog_2
         {
             if (timeseries != IntPtr.Zero)
             {
+                // write the feature's title into buffer
                 Analysis_GetCorrelatedColumn(buffer, timeseries, title);
-                string correlated = buffer.ToString();
-                return correlated;
+                return buffer.ToString();
             }
             return null;
         }
@@ -110,8 +149,9 @@ namespace Adv_Prog_2
                 a = x;
                 b = y;
             }
-            else // if timeseries is null simply set a, b to a default value
+            else 
             {
+                // if timeseries is null simply set a, b to a default value (0)
                 a = b = 0;
             }
         }
@@ -157,6 +197,7 @@ namespace Adv_Prog_2
 
         public void DestroyResources()
         {
+            // destroy an object if it's not null, and set it to null after
             if (detector != IntPtr.Zero)
             {
                 Analysis_DestroyDetector(detector);

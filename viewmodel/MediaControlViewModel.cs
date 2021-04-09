@@ -34,12 +34,13 @@ namespace Adv_Prog_2.viewmodel
         public int VM_FrameCount
         {
             get { return model.FrameCount; }
-            set { model.FrameCount = value; }
+        }
+        public string VM_MaxTimerString { 
+            get { return model.MaxTimerString; }
         }
         public string VM_TimerString
         {
             get { return model.TimerString; }
-            set { model.TimerString = value; }
         }
         public string VM_SpeedString
         {
@@ -49,7 +50,6 @@ namespace Adv_Prog_2.viewmodel
         public float VM_Speed
         {
             get { return model.Speed; }
-            set { model.Speed = value; }
         }
         public bool VM_Connected
         {

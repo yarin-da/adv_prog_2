@@ -5,8 +5,17 @@
     <Color x:Key="BlackenedGray">#121212</Color>
     <SolidColorBrush x:Key="BlackenedGrayBrush" Color="{StaticResource BlackenedGray}" />
 
+    <Color x:Key="DarkGrayBlue">#36474e</Color>
+    <SolidColorBrush x:Key="DarkGrayBlueBrush" Color="{StaticResource DarkGrayBlue}" />
+
+    <Color x:Key="MidGrayBlue">#648391</Color>
+    <SolidColorBrush x:Key="MidGrayBlueBrush" Color="{StaticResource MidGrayBlue}" />
+
+    <Color x:Key="LightGrayBlue">#84a3b1</Color>
+    <SolidColorBrush x:Key="LightGrayBlueBrush" Color="{StaticResource LightGrayBlue}" />
+
     <Color x:Key="PanelBorder">#d6c9b5</Color>
-    <SolidColorBrush x:Key="PanelBorderBrush" Color="{StaticResource PanelBorder}" />
+    <SolidColorBrush x:Key="PanelBorderBrush" Color="{StaticResource DarkGrayBlue}" />
 
     <Color x:Key="LabelBackground">#d6c9b5</Color>
     <SolidColorBrush x:Key="LabelBackgroundBrush" Color="{StaticResource LabelBackground}" />
@@ -16,13 +25,13 @@
 
     <SolidColorBrush x:Key="MediaPanelBackgroundBrush" Color="{StaticResource BlackenedGray}" />
 
-    <Color x:Key="MediaLabelForeground">#00aacc</Color>
+    <Color x:Key="MediaLabelForeground">#ccc</Color>
     <SolidColorBrush x:Key="MediaLabelForegroundBrush" Color="{StaticResource MediaLabelForeground}" />
 
-    <Color x:Key="MediaButtonBackground">#297795</Color>
+    <Color x:Key="MediaButtonBackground">#999</Color>
     <SolidColorBrush x:Key="MediaButtonBackgroundBrush" Color="{StaticResource MediaButtonBackground}" />
 
-    <Color x:Key="MediaButtonBackgroundHover">#3a88a6</Color>
+    <Color x:Key="MediaButtonBackgroundHover">#99aabb</Color>
     <SolidColorBrush x:Key="MediaButtonBackgroundHoverBrush" Color="{StaticResource MediaButtonBackgroundHover}" />
 
     <Color x:Key="MediaButtonBorder">#99aabb</Color>
@@ -30,16 +39,14 @@
 
     <SolidColorBrush x:Key="ColumnListBackgroundBrush" Color="Black" />
 
-    <Color x:Key="ColumnListForeground">AliceBlue</Color>
-    <SolidColorBrush x:Key="ColumnListForegroundBrush" Color="{StaticResource ColumnListForeground}" />
+    <SolidColorBrush x:Key="ColumnListForegroundBrush" Color="{StaticResource LightGrayBlue}" />
 
     <SolidColorBrush x:Key="GraphBackgroundBrush" Color="Black" />
 
     <Color x:Key="GraphForeground">AliceBlue</Color>
     <SolidColorBrush x:Key="GraphForegroundBrush" Color="{StaticResource GraphForeground}" />
 
-    <Color x:Key="TextBoxBackground">#36474e</Color>
-    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource TextBoxBackground}" />
+    <SolidColorBrush x:Key="TextBoxBackgroundBrush" Color="{StaticResource DarkGrayBlue}" />
 
     <Color x:Key="TextBoxForeground">AliceBlue</Color>
     <SolidColorBrush x:Key="TextBoxForegroundBrush" Color="{StaticResource TextBoxForeground}" />
@@ -47,5 +54,5 @@
     <SolidColorBrush x:Key="MainWindowBackgroundBrush" Color="{StaticResource BlackenedGray}" />
 
     <SolidColorBrush x:Key="DashboardLabelForegroundBrush" Color="#fff" />
-    <SolidColorBrush x:Key="DashboardBorderBrush" Color="#fff" />
+    <SolidColorBrush x:Key="DashboardBorderBrush" Color="#ccc" />
 </ResourceDictionary>

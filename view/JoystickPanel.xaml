@@ -13,7 +13,7 @@
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Throttle1" Foreground="#fff" VerticalAlignment="Center">
+                <TextBlock Text="Throttle1" Foreground="AliceBlue" VerticalAlignment="Center">
                     <TextBlock.LayoutTransform>
                         <RotateTransform Angle="270" />
                     </TextBlock.LayoutTransform>
@@ -24,12 +24,13 @@
                     Margin="5 20 5 20"
                     MinWidth="10"
                     Focusable="False"
+                    Foreground="{StaticResource MidGrayBlueBrush}"
                     Minimum="{Binding VM_MinThrottle, Mode=OneWay}"
                     Maximum="{Binding VM_MaxThrottle, Mode=OneWay}"
                     Value="{Binding VM_Throttle1, Mode=OneWay}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Throttle2" Foreground="#fff" VerticalAlignment="Center">
+                <TextBlock Text="Throttle2" Foreground="AliceBlue" VerticalAlignment="Center">
                     <TextBlock.LayoutTransform>
                         <RotateTransform Angle="270" />
                     </TextBlock.LayoutTransform>
@@ -40,6 +41,7 @@
                     MinWidth="10"
                     Margin="5 20 5 20"
                     Focusable="False"
+                    Foreground="{StaticResource MidGrayBlueBrush}"
                     Minimum="{Binding VM_MinThrottle, Mode=OneWay}"
                     Maximum="{Binding VM_MaxThrottle, Mode=OneWay}"
                     Value="{Binding VM_Throttle2, Mode=OneWay}"/>
@@ -53,31 +55,42 @@
             <Border Grid.Row="0" Margin="10" Width="120" Height="120">
                 <Canvas>
                     <Ellipse 
-                        Fill="#233" 
                         Canvas.Left="0"
                         Canvas.Top="0" 
-                        Stroke="#566"
-                        StrokeThickness="2"
                         Height="120" 
-                        Width="120"/>
-                    <Ellipse 
-                        Fill="Beige" 
+                        Width="120"
+                        Stroke="{StaticResource DarkGrayBlueBrush}"
+                        StrokeThickness="1">
+                        <Ellipse.Fill>
+                            <RadialGradientBrush>
+                                <GradientStop Color="{StaticResource DarkGrayBlue}" Offset="1" />
+                                <GradientStop Color="{StaticResource BlackenedGray}" Offset="0.5" />
+                            </RadialGradientBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                    <Ellipse
                         Canvas.Left="{Binding VM_KnobX, Mode=OneWay}" 
-                        Canvas.Top="{Binding VM_KnobY, Mode=OneWay}" 
-                        Stroke="#fff"
-                        StrokeThickness="2"
+                        Canvas.Top="{Binding VM_KnobY, Mode=OneWay}"
                         Height="60"
-                        Width="60"/>
+                        Width="60">
+                        <Ellipse.Fill>
+                            <RadialGradientBrush>
+                                <GradientStop Color="#000" Offset="1" />
+                                <GradientStop Color="#ccc" Offset="0.8" />
+                            </RadialGradientBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
                 </Canvas>
             </Border>
             <StackPanel Grid.Row="1">
-                <TextBlock Text="Rudder" Foreground="#fff" HorizontalAlignment="Center"/>
+                <TextBlock Text="Rudder" Foreground="AliceBlue" HorizontalAlignment="Center"/>
                 <ProgressBar 
                     Orientation="Horizontal" 
                     VerticalAlignment="Center"
                     Margin="20 10 20 0"
                     MinHeight="10"
                     Focusable="False"
+                    Foreground="{StaticResource MidGrayBlueBrush}"
                     Minimum="{Binding VM_MinRudder, Mode=OneWay}"
                     Maximum="{Binding VM_MaxRudder, Mode=OneWay}"
                     Value="{Binding VM_Rudder, Mode=OneWay}"/>

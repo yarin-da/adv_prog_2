@@ -7,6 +7,7 @@ namespace Adv_Prog_2
     {
         public bool IsPlaying { get; }
         public int FrameCount { get; set; }
+        public string MaxTimerString { get; }
         public string TimerString { get; set; }
         public string SpeedString { get; set; }
         public float Speed { get; set; }

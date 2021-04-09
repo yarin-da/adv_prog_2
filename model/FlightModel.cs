@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Diagnostics;
+using Adv_Prog_2.model.graph;
 using Adv_Prog_2.model.joystick;
-using Adv_Prog_2.model.joystick_and_dashboard;
+using Adv_Prog_2.model.dashboard;
 using OxyPlot;
+using Adv_Prog_2.model.data;
 
-namespace Adv_Prog_2
+namespace Adv_Prog_2.model
 {
     class FlightModel : IModel
     {
@@ -20,9 +20,9 @@ namespace Adv_Prog_2
 
         private ISimPlayer simPlayer;
 
-        private IGraphPlotter selectedPlot;
-        private IGraphPlotter correlatedPlot;
-        private IGraphPlotter anomalyPlot;
+        private BaseGraph selectedPlot;
+        private BaseGraph correlatedPlot;
+        private BaseGraph anomalyPlot;
 
         private IJoystick joystick;
         private IDashboard dashboard;
@@ -48,11 +48,11 @@ namespace Adv_Prog_2
             dataParser = new XMLParser();
             dataAnalyzer = new DataAnalyzer();
 
-            selectedPlot = new FlightGraphPlotter("SelectedPlot");
+            selectedPlot = new MonitorGraph("SelectedPlot", dataAnalyzer, fileIterator);
             selectedPlot.PropertyChanged += PropertyChangedFunction;
-            correlatedPlot = new FlightGraphPlotter("CorrelatedPlot");
+            correlatedPlot = new MonitorGraph("CorrelatedPlot", dataAnalyzer, fileIterator);
             correlatedPlot.PropertyChanged += PropertyChangedFunction;
-            anomalyPlot = new FlightGraphPlotter("AnomalyPlot");
+            anomalyPlot = new AnomalyGraph("AnomalyPlot", dataAnalyzer, fileIterator);
             anomalyPlot.PropertyChanged += PropertyChangedFunction;
 
             simPlayer = new FlightSimPlayer(netClient, fileIterator);
@@ -88,18 +88,6 @@ namespace Adv_Prog_2
         public float Yaw { get { return dashboard.Yaw; } }
         public float Pitch { get { return dashboard.Pitch; } }
         public float Roll { get { return dashboard.Roll; } }
-        public float AltimeterMax { get { return dashboard.AltimeterMax; } }
-        public float AirspeedMax { get { return dashboard.AirspeedMax; } }
-        public float DirectionMax { get { return dashboard.DirectionMax; } }
-        public float YawMax { get { return dashboard.YawMax; } }
-        public float PitchMax { get { return dashboard.PitchMax; } }
-        public float RollMax { get { return dashboard.RollMax; } }
-        public float AltimeterMin { get { return dashboard.AltimeterMin; } }
-        public float AirspeedMin { get { return dashboard.AirspeedMin; } }
-        public float DirectionMin { get { return dashboard.DirectionMin; } }
-        public float YawMin { get { return dashboard.YawMin; } }
-        public float PitchMin { get { return dashboard.PitchMin; } }
-        public float RollMin { get { return dashboard.RollMin; } }
         #endregion
 
         #region joystick
@@ -117,6 +105,7 @@ namespace Adv_Prog_2
 
         #region graphs
 
+        public IList<DataPoint> AnomalyPoints { get { return anomalyPlot.Points;  } }
         public List<string> ColumnList 
         { 
             get 
@@ -140,72 +129,38 @@ namespace Adv_Prog_2
 
                 selectedColumn = value;
                 // make sure selectedPlot updates automatically every few milliseconds
-                selectedPlot.SetDataCallback(selectedColumn, fileIterator, dataAnalyzer);
+                selectedPlot.SetDataCallback(selectedColumn);
                 string correlatedColumn = dataAnalyzer.GetCorrelatedColumn(value);
                 if (correlatedColumn != null)
                 {
                     // make sure anomalyPlot updates automatically every few milliseconds
-                    correlatedPlot.SetDataCallback(correlatedColumn, fileIterator, dataAnalyzer);
+                    correlatedPlot.SetDataCallback(correlatedColumn);
                 }
 
-                float a, b;
-                dataAnalyzer.GetLinearReg(selectedColumn, out a, out b);
-                anomalyPlot.LoadData(selectedColumn, a, b);
+                anomalyPlot.SetDataCallback(selectedColumn);
             } 
         }
 
         #endregion
 
         #region network_client
-
-        public static SolidColorBrush green = new SolidColorBrush(Colors.LightGreen);
-        public static SolidColorBrush red = new SolidColorBrush(Colors.Red);
-        public const string notConnectedString = "Not Connected";
-        public const string connectionFailedString = "Connection Failed!";
-        public const string connectedString = "Connection Established";
-        public const string fileMissingString = "Missing File";
-        public const string connectButtonConnect = "Connect";
-        public const string connectButtonDisconnect = "Disconnect";
-
-        public string ConnectButtonText { get; private set; } = connectButtonConnect;
-        public string ConnectStatus { get; private set; } = notConnectedString;
-        public SolidColorBrush ConnectStatusColor { get; private set; } = red;
-        public string FlightDataFileName { get; private set; } = fileMissingString;
-        public SolidColorBrush FlightDataFileNameColor { get; private set; } = red;
-        public string MetaDataFileName { get; private set; } = fileMissingString;
-        public SolidColorBrush MetaDataFileNameColor { get; private set; } = red;
         public string ServerPort { get; set; } = "5400";
         public string ServerIP { get; set; } = "127.0.0.1";
         public bool IsConnected { get { return netClient.IsConnected; } }
-        public void ToggleConnection()
-        {
-            if (IsConnected)
-            {
-                Disconnect();
-            }
-            else {
-                Connect();
-            }
-        }
-        public void Connect() {
-            bool connectSuccess = false;
+        
+        public bool Connect() {
             int port;
             if (int.TryParse(ServerPort, out port))
             {
                 try
                 {
                     netClient.Connect(port, ServerIP);
-                    connectSuccess = true;
+                    // won't get here if an exception was thrown during connect 
+                    return true;
                 }
-                catch (Exception ex) { Console.WriteLine(ex); }
+                catch (Exception ex) { Trace.WriteLine(ex); }
             }
-
-            ConnectStatus = connectSuccess ? connectedString : connectionFailedString;
-            ConnectStatusColor = connectSuccess ? green : red;
-            ConnectButtonText = connectSuccess ? connectButtonDisconnect : connectButtonConnect;
-            NotifyPropertyChanged("ConnectStatus");
-            NotifyPropertyChanged("ConnectStatusColor");
-            NotifyPropertyChanged("ConnectButtonText");
+            return false;
         }
         public void Disconnect() 
         {
@@ -213,14 +168,7 @@ namespace Adv_Prog_2
             // because otherwise the socket might throw an exception (invalid write)
             Pause();
             netClient.Disconnect();
-            ConnectStatus = notConnectedString;
-            ConnectStatusColor = red;
-            ConnectButtonText = connectButtonConnect;
-            NotifyPropertyChanged("ConnectStatus");
-            NotifyPropertyChanged("ConnectStatusColor");
-            NotifyPropertyChanged("ConnectButtonText");
         }
-
         #endregion
 
         #region media_controls_and_properties
@@ -234,6 +182,9 @@ namespace Adv_Prog_2
         {
             get { return simPlayer.TimerString; }
             set { simPlayer.TimerString = value; }
+        }
+        public string MaxTimerString { 
+            get { return simPlayer.MaxTimerString; }
         }
         public string SpeedString
         {
@@ -302,17 +253,23 @@ namespace Adv_Prog_2
         #endregion
 
         #region data_files
-        public void SetFlightDataFile(string filePath) 
+        public void SetFlightData(string filePath) 
         {
             simPlayer.LoadFile(filePath);
             dataAnalyzer.SetFlightData(filePath);
         }
-        public void SetColumnData(string filePath) 
+
+        public void SetMetaData(string filePath) 
         {
             // update the columnList and notify the view
             dataParser.LoadFile(filePath);
             dataAnalyzer.SetMetaData(dataParser.GetTitles());
             NotifyPropertyChanged("ColumnList");
+        }
+
+        public void SetAnomalyData(string filePath)
+        {
+            // TODO
         }
         #endregion
 

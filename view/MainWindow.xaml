@@ -13,24 +13,28 @@
         <!-- Load Files, Connect, Media Controls -->
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="300"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            
-            <!-- Buttons and Labels -->
-            <local:SessionSetupPanel Grid.Column="0" />
 
+            <!-- Joystick Panel -->
+            <local:JoystickPanel Grid.Column="0" Margin="5" MaxWidth="300"/>
+            
             <!-- Media Controls (buttons, speed textbox and slider) -->
             <local:MediaControlPanel 
                 Grid.Column="1"
                 Background="{StaticResource MediaPanelBackgroundBrush}" />
         </Grid>
         <!-- Graph Panel (and a listbox of column titles) -->
-        <local:GraphPanel DockPanel.Dock="Left" MinWidth="500"/>
-        
-        <!-- Joystick Panel -->
-        <local:JoystickPanel DockPanel.Dock="Right" MaxWidth="300"/>
+        <local:GraphPanel DockPanel.Dock="Left" MinWidth="600"/>
 
+        <!-- Buttons and Labels -->
+        <local:SessionSetupPanel 
+                DockPanel.Dock="Right"
+                Margin="5" 
+                BorderBrush="{StaticResource MidGrayBlueBrush}" 
+                BorderThickness="1"/>
+        
         <local:DashboardPanel MaxWidth="300"/>
     </DockPanel>
 </Window>

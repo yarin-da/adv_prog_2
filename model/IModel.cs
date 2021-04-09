@@ -16,18 +16,6 @@ namespace Adv_Prog_2
         public float Yaw { get; }
         public float Pitch { get; }
         public float Roll { get; }
-        public float AltimeterMax { get; }
-        public float AirspeedMax { get; }
-        public float DirectionMax { get; }
-        public float YawMax { get; }
-        public float PitchMax { get; }
-        public float RollMax { get; }
-        public float AltimeterMin { get; }
-        public float AirspeedMin { get; }
-        public float DirectionMin { get; }
-        public float YawMin { get; }
-        public float PitchMin { get; }
-        public float RollMin { get; }
         #endregion
 
         #region joystick
@@ -43,6 +31,7 @@ namespace Adv_Prog_2
         #endregion
 
         #region graphs
+        public IList<DataPoint> AnomalyPoints { get; }
         public List<string> ColumnList { get; }
         public PlotModel SelectedPlot { get; }
         public PlotModel CorrelatedPlot { get; }
@@ -51,24 +40,19 @@ namespace Adv_Prog_2
         #endregion
 
         #region networking
-        public string ConnectButtonText { get; }
-        public string ConnectStatus { get; }
-        public SolidColorBrush ConnectStatusColor { get; }
-        public string FlightDataFileName { get; }
-        public SolidColorBrush FlightDataFileNameColor { get; }
-        public string MetaDataFileName { get; }
-        public SolidColorBrush MetaDataFileNameColor { get; }
         public string ServerPort { get; set; }
         public string ServerIP { get; set; }
         public bool IsConnected { get; }
-        public void ToggleConnection();
+        public bool Connect();
+        public void Disconnect();
         #endregion
 
         #region media_control
-        public int FrameCount { get; set; }
+        public int FrameCount { get; }
         public string TimerString { get; set; }
+        public string MaxTimerString { get; }
         public string SpeedString { get; set; }
-        public float Speed { get; set; }
+        public float Speed { get; }
         public int Frame { get; set; }
 
         public void Play();
@@ -81,8 +65,9 @@ namespace Adv_Prog_2
         #endregion
 
         #region data_files
-        public void SetFlightDataFile(string filePath);
-        public void SetColumnData(string filePath);
+        public void SetFlightData(string filePath);
+        public void SetAnomalyData(string filePath);
+        public void SetMetaData(string filePath);
         #endregion
 
         public void CloseApplication();

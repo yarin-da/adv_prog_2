@@ -65,6 +65,7 @@ namespace Adv_Prog_2
             }
         }
 
+        public string MaxTimerString { get; private set; } = "00:00:00";
         public string TimerString 
         {
             get 
@@ -140,18 +141,28 @@ namespace Adv_Prog_2
 
         #region SimulationLoop
 
+        private int calcSecondsPassed(int frame)
+        {
+            // divide by the default amount of frames sent per second
+            // i.e. assuming default speed (1.0f)
+            // add DEFAULT_FPS - 1 to round up
+            return (frame + DEFAULT_FPS - 1) / DEFAULT_FPS;
+        }
+
+        private string SecondsToTimer(int seconds)
+        {
+            TimeSpan t = TimeSpan.FromSeconds(seconds);
+            return string.Format("{0:D2}:{1:D2}:{2:D2}",
+                t.Hours, t.Minutes, t.Seconds);
+        }
+
         public void UpdateTimerString()
         {
             if (speed > 0)
             {
                 // get the seconds passed
-                // divide by the default amount of frames sent per second
-                // i.e. assuming default speed (1.0f)
-                // add DEFAULT_FPS - 1 to round up 
-                int secondsPassed = (Frame + DEFAULT_FPS - 1) / DEFAULT_FPS;
-                TimeSpan t = TimeSpan.FromSeconds(secondsPassed);
-                TimerString = string.Format("{0:D2}:{1:D2}:{2:D2}",
-                    t.Hours, t.Minutes, t.Seconds);
+                int secondsPassed = calcSecondsPassed(Frame);
+                TimerString = SecondsToTimer(secondsPassed);
             }
         }
 
@@ -267,6 +278,10 @@ namespace Adv_Prog_2
             // set the playback to the beginning of the simulation
             Frame = 0;
             FrameCount = fileIterator.LineCount;
+            // calculate the maximum simulation timer
+            int maxSeconds = calcSecondsPassed(FrameCount);
+            MaxTimerString = SecondsToTimer(maxSeconds);
+            NotifyPropertyChanged("MaxTimerString");
         }
     }
 }

@@ -19,115 +19,239 @@
         <Border 
             Grid.Row="0" 
             Grid.Column="0"
-            BorderBrush="{StaticResource DashboardBorderBrush}"
-            BorderThickness="2">
+            BorderBrush="{StaticResource DarkGrayBlueBrush}"
+            BorderThickness="1"
+            Margin="5">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock 
                     Text="Altimeter" 
                     HorizontalAlignment="Center"
-                    FontSize="20"
+                    FontSize="14"
                     Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
-                <ProgressBar
-                    Margin="20"
-                    MinHeight="10"
-                    Minimum="{Binding VM_AltimeterMin, Mode=OneWay}"
-                    Maximum="{Binding VM_AltimeterMax, Mode=OneWay}"
-                    Value="{Binding VM_Altimeter, Mode=OneWay}"/>
-            </StackPanel>
-        </Border>
-        <Border 
-            Grid.Row="1" 
-            Grid.Column="0"
-            BorderBrush="{StaticResource DashboardBorderBrush}"
-            BorderThickness="2">
-            <StackPanel VerticalAlignment="Center">
                 <TextBlock 
-                    Text="AirSpeed" 
+                    Text="{Binding VM_Altimeter, Mode=OneWay}"
                     HorizontalAlignment="Center"
-                    FontSize="20"
+                    FontSize="14"
                     Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
-                <ProgressBar
-                    Margin="20"
-                    MinHeight="10"
-                    Minimum="{Binding VM_AirspeedMin, Mode=OneWay}"
-                    Maximum="{Binding VM_AirspeedMax, Mode=OneWay}"
-                    Value="{Binding VM_Airspeed, Mode=OneWay}"/>
-            </StackPanel>
-        </Border>
-        <Border 
-            Grid.Row="2" 
-            Grid.Column="0"
-            BorderBrush="{StaticResource DashboardBorderBrush}"
-            BorderThickness="2">
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock 
-                    Text="Direction" 
-                    HorizontalAlignment="Center"
-                    FontSize="20"
-                    Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
-                <ProgressBar
-                    Margin="20"
-                    MinHeight="10"
-                    Minimum="{Binding VM_DirectionMin, Mode=OneWay}"
-                    Maximum="{Binding VM_DirectionMax, Mode=OneWay}"
-                    Value="{Binding VM_Direction, Mode=OneWay}"/>
             </StackPanel>
         </Border>
         <Border 
             Grid.Row="0" 
             Grid.Column="1"
-            BorderBrush="{StaticResource DashboardBorderBrush}"
-            BorderThickness="2">
+            BorderBrush="{StaticResource DarkGrayBlueBrush}"
+            BorderThickness="1"
+            Margin="5">
             <StackPanel VerticalAlignment="Center">
                 <TextBlock 
-                    Text="Yaw" 
+                    Text="AirSpeed" 
                     HorizontalAlignment="Center"
-                    FontSize="20"
+                    FontSize="14"
                     Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
-                <ProgressBar
-                    Margin="20"
-                    MinHeight="10"
-                    Minimum="{Binding VM_YawMin, Mode=OneWay}"
-                    Maximum="{Binding VM_YawMax, Mode=OneWay}"
-                    Value="{Binding VM_Yaw, Mode=OneWay}"/>
+                <TextBlock 
+                    Text="{Binding VM_Airspeed, Mode=OneWay}"
+                    HorizontalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
+            </StackPanel>
+        </Border>
+        <Border 
+            Grid.Row="1" 
+            Grid.Column="0"
+            BorderBrush="{StaticResource DarkGrayBlueBrush}"
+            BorderThickness="1"
+            Margin="5">
+            <StackPanel>
+                <TextBlock 
+                    Text="Direction" 
+                    HorizontalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
+                <Canvas 
+                    Margin="5"
+                    Width="80"
+                    Height="80"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Ellipse
+                        Fill="{StaticResource DarkGrayBlueBrush}"
+                        Stroke="{StaticResource MidGrayBlueBrush}"
+                        StrokeThickness="2"
+                        Canvas.Top="0"
+                        Canvas.Left="0"
+                        Width="80"
+                        Height="80"/>
+                    <Line
+                        Stroke="AliceBlue"
+                        StrokeThickness="2"
+                        Canvas.Top="40"
+                        Canvas.Left="40"
+                        X2="{Binding VM_DirectionX, Mode=OneWay}"
+                        Y2="{Binding VM_DirectionY, Mode=OneWay}"/>
+                    <Ellipse
+                        Fill="#233"
+                        Stroke="#122"
+                        StrokeThickness="1"
+                        Canvas.Top="35"
+                        Canvas.Left="35"
+                        Width="10"
+                        Height="10"/>
+                </Canvas>
+                <TextBlock 
+                    Text="{Binding VM_Direction, Mode=OneWay}" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
             </StackPanel>
         </Border>
         <Border 
             Grid.Row="1" 
             Grid.Column="1"
-            BorderBrush="{StaticResource DashboardBorderBrush}"
-            BorderThickness="2">
-            <StackPanel VerticalAlignment="Center">
+            BorderBrush="{StaticResource DarkGrayBlueBrush}"
+            BorderThickness="1"
+            Margin="5">
+            <StackPanel>
+                <TextBlock 
+                    Text="Yaw" 
+                    HorizontalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
+                <Canvas 
+                    Margin="5"
+                    Width="80"
+                    Height="80"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Ellipse
+                        Fill="{StaticResource DarkGrayBlueBrush}"
+                        Stroke="{StaticResource MidGrayBlueBrush}"
+                        StrokeThickness="2"
+                        Canvas.Top="0"
+                        Canvas.Left="0"
+                        Width="80"
+                        Height="80"/>
+                    <Line
+                        Stroke="AliceBlue"
+                        StrokeThickness="2"
+                        Canvas.Top="40"
+                        Canvas.Left="40"
+                        X2="{Binding VM_YawX, Mode=OneWay}"
+                        Y2="{Binding VM_YawY, Mode=OneWay}"/>
+                    <Ellipse
+                        Fill="#233"
+                        Stroke="#122"
+                        StrokeThickness="1"
+                        Canvas.Top="35"
+                        Canvas.Left="35"
+                        Width="10"
+                        Height="10"/>
+                </Canvas>
+                <TextBlock 
+                    Text="{Binding VM_Yaw, Mode=OneWay}" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
+            </StackPanel>
+        </Border>
+        <Border 
+            Grid.Row="2" 
+            Grid.Column="0"
+            BorderBrush="{StaticResource DarkGrayBlueBrush}"
+            BorderThickness="1"
+            Margin="5">
+            <StackPanel>
                 <TextBlock 
                     Text="Pitch" 
                     HorizontalAlignment="Center"
-                    FontSize="20"
+                    FontSize="14"
                     Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
-                <ProgressBar
-                    Margin="20"
-                    MinHeight="10"
-                    Minimum="{Binding VM_PitchMin, Mode=OneWay}"
-                    Maximum="{Binding VM_PitchMax, Mode=OneWay}"
-                    Value="{Binding VM_Pitch, Mode=OneWay}"/>
+                <Canvas 
+                    Margin="5"
+                    Width="80"
+                    Height="80"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Ellipse
+                        Fill="{StaticResource DarkGrayBlueBrush}"
+                        Stroke="{StaticResource MidGrayBlueBrush}"
+                        StrokeThickness="2"
+                        Canvas.Top="0"
+                        Canvas.Left="0"
+                        Width="80"
+                        Height="80"/>
+                    <Line
+                        Stroke="AliceBlue"
+                        StrokeThickness="2"
+                        Canvas.Top="40"
+                        Canvas.Left="40"
+                        X2="{Binding VM_PitchX, Mode=OneWay}"
+                        Y2="{Binding VM_PitchY, Mode=OneWay}"/>
+                    <Ellipse
+                        Fill="#233"
+                        Stroke="#122"
+                        StrokeThickness="1"
+                        Canvas.Top="35"
+                        Canvas.Left="35"
+                        Width="10"
+                        Height="10"/>
+                </Canvas>
+                <TextBlock 
+                    Text="{Binding VM_Pitch, Mode=OneWay}" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
             </StackPanel>
         </Border>
         <Border 
             Grid.Row="2" 
             Grid.Column="1"
-            BorderBrush="{StaticResource DashboardBorderBrush}"
-            BorderThickness="2">
-            <StackPanel VerticalAlignment="Center">
+            BorderBrush="{StaticResource DarkGrayBlueBrush}"
+            BorderThickness="1"
+            Margin="5">
+            <StackPanel>
                 <TextBlock 
                     Text="Roll" 
                     HorizontalAlignment="Center"
-                    FontSize="20"
+                    FontSize="14"
                     Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
-                <ProgressBar
-                    Margin="20"
-                    MinHeight="10"
-                    Minimum="{Binding VM_RollMin, Mode=OneWay}"
-                    Maximum="{Binding VM_RollMax, Mode=OneWay}"
-                    Value="{Binding VM_Roll, Mode=OneWay}"/>
+                <Canvas 
+                    Margin="5"
+                    Width="80"
+                    Height="80"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <Ellipse
+                        Fill="{StaticResource DarkGrayBlueBrush}"
+                        Stroke="{StaticResource MidGrayBlueBrush}"
+                        StrokeThickness="2"
+                        Canvas.Top="0"
+                        Canvas.Left="0"
+                        Width="80"
+                        Height="80"/>
+                    <Line
+                        Stroke="AliceBlue"
+                        StrokeThickness="2"
+                        Canvas.Top="40"
+                        Canvas.Left="40"
+                        X2="{Binding VM_RollX, Mode=OneWay}"
+                        Y2="{Binding VM_RollY, Mode=OneWay}"/>
+                    <Ellipse
+                        Fill="#233"
+                        Stroke="#122"
+                        StrokeThickness="1"
+                        Canvas.Top="35"
+                        Canvas.Left="35"
+                        Width="10"
+                        Height="10"/>
+                </Canvas>
+                <TextBlock 
+                    Text="{Binding VM_Roll, Mode=OneWay}" 
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Foreground="{StaticResource DashboardLabelForegroundBrush}"/>
             </StackPanel>
         </Border>
     </Grid>
