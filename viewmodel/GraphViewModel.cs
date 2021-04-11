@@ -5,7 +5,7 @@ namespace Adv_Prog_2.viewmodel
 {
     class GraphViewModel : BaseViewModel
     {
-        public IList<DataPoint> VM_AnomalyPoints { get { return model.AnomalyPoints; } }
+        #region properties
         public PlotModel VM_SelectedPlot { get { return model.SelectedPlot; } }
         public PlotModel VM_CorrelatedPlot { get { return model.CorrelatedPlot; } }
         public PlotModel VM_AnomalyPlot { get { return model.AnomalyPlot; } }
@@ -15,5 +15,6 @@ namespace Adv_Prog_2.viewmodel
             get { return model.SelectedColumn; }
             set { model.SelectedColumn = value; }
         }
+        #endregion
     }
 }

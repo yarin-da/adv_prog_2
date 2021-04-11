@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Reference Include="StatisticAnalysis">
-      <HintPath>..\StatisticAnalysis\Debug\StatisticAnalysis.dll</HintPath>
+      <HintPath>Resources\libs\AnalysisUtil.dll</HintPath>
     </Reference>
   </ItemGroup>
 
@@ -50,10 +50,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="plugins\" />
   </ItemGroup>
 
 </Project>

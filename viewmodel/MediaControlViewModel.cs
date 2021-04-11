@@ -1,23 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Adv_Prog_2.viewmodel.relaycmd;
 
 namespace Adv_Prog_2.viewmodel
 {
     class MediaControlViewModel : BaseViewModel
     {
+        #region ctor
         public MediaControlViewModel ()
         {
             VM_PlayCommand = new RelayCommand(null, param => model.Play());
             VM_PauseCommand = new RelayCommand(null, param => model.Pause());
             VM_StopCommand = new RelayCommand(null, param => model.Stop());
-            VM_FastForwardCommand = new RelayCommand(null, param => model.FastForward());
-            VM_FastBackwardsCommand = new RelayCommand(null, param => model.FastBackwards());
-            VM_FrameForwardCommand = new RelayCommand(null, param => model.FrameForward());
-            VM_FrameBackwardsCommand = new RelayCommand(null, param => model.FrameBackwards());
+            VM_FastForwardCommand = new RelayCommand(null, param => model.SendMediaControl("FastForward"));
+            VM_FastBackwardsCommand = new RelayCommand(null, param => model.SendMediaControl("FastBackwards"));
+            VM_FrameForwardCommand = new RelayCommand(null, param => model.SendMediaControl("FrameForward"));
+            VM_FrameBackwardsCommand = new RelayCommand(null, param => model.SendMediaControl("FrameBackwards"));
         }
+        #endregion
 
+        #region properties
         public ICommand VM_PlayCommand { get; private set; }
         public ICommand VM_PauseCommand { get; private set; }
         public ICommand VM_StopCommand { get; private set; }
@@ -55,5 +56,6 @@ namespace Adv_Prog_2.viewmodel
         {
             get { return model.IsConnected; }
         }
+        #endregion
     }
 }

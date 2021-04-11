@@ -2,54 +2,66 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using Adv_Prog_2.viewmodel.relaycmd;
 using Microsoft.Win32;
 
 namespace Adv_Prog_2.viewmodel
 {
     class SessionSetupViewModel : BaseViewModel
     {
+        #region constants
         public static SolidColorBrush green = new SolidColorBrush(Colors.LightGreen);
-        public static SolidColorBrush red = new SolidColorBrush(Colors.Red);
+        public static SolidColorBrush red = new SolidColorBrush(Color.FromRgb(255, 128, 128));
         public const string notConnectedString = "Not Connected";
         public const string connectionFailedString = "Connection Failed!";
         public const string connectedString = "Connection Established";
+        public const string learningFileMissingString = "Missing Learning Data File (csv)";
         public const string flightFileMissingString = "Missing Flight Data File (csv)";
-        public const string anomalyFileMissingString = "Missing Anomaly Data File (csv)";
         public const string metaFileMissingString = "Missing Flight Data File (xml)";
+        public const string algoFileMissingString = "Missing Anomaly Algorithm (dll)";
         public const string connectButtonConnect = "Connect";
         public const string connectButtonDisconnect = "Disconnect";
+        #endregion
 
+        #region ctor
         public SessionSetupViewModel()
         {
             VM_ConnectCommand = new RelayCommand(null, param => ToggleConnection());
             VM_UploadFlightData = new RelayCommand(null, param => UploadFlightData());
             VM_UploadMetaData = new RelayCommand(null, param => UploadMetaData());
-            VM_UploadAnomalyData = new RelayCommand(null, param => UploadAnomalyData());
+            VM_UploadLearningData = new RelayCommand(null, param => UploadLearningData());
+            VM_UploadAlgorithmData = new RelayCommand(null, param => UploadAlgorithmData());
             VM_Help = new RelayCommand(null, param => Help());
         }
+        #endregion
 
+        #region help_button
         public ICommand VM_Help { get; private set; }
-
         public void Help()
         {
             string message = "Copy your metadata xml file into {{FLIGHTGEAR_FOLDER}}/data/Protocol/\n\n";
             message += "Open FlightGear, Go to Settings and enter these commands at the bottom:\n";
             message += "--generic=socket,in,10,{IP_ADDRESS},{PORT},udp,{METADATA_FILE.xml} --fdm = null\n\n";
-            message += "Make sure to connect, upload flight data and the xml meta data before you start the simulation\n";
+            message += "Under the buttons, there are labels in red/green colors - make sure they are all green before you start the simulation\n\n";
+            message += "The buttons are your friends - they will help you turn all of the labels green\n";
             MessageBox.Show(message);
         }
+        #endregion
 
         #region setup_files
+        public string VM_LearningDataFileName { get; private set; } = learningFileMissingString;
+        public SolidColorBrush VM_LearningDataFileNameColor { get; private set; } = red;
         public string VM_FlightDataFileName { get; private set; } = flightFileMissingString;
         public SolidColorBrush VM_FlightDataFileNameColor { get; private set; } = red;
-        public string VM_AnomalyDataFileName { get; private set; } = anomalyFileMissingString;
-        public SolidColorBrush VM_AnomalyDataFileNameColor { get; private set; } = red;
         public string VM_MetaDataFileName { get; private set; } = metaFileMissingString;
         public SolidColorBrush VM_MetaDataFileNameColor { get; private set; } = red;
-        
+        public string VM_AlgorithmDataFileName { get; private set; } = algoFileMissingString;
+        public SolidColorBrush VM_AlgorithmDataFileNameColor { get; private set; } = red;
+
         public ICommand VM_UploadFlightData { get; private set; }
         public ICommand VM_UploadMetaData { get; private set; }
-        public ICommand VM_UploadAnomalyData { get; private set; }
+        public ICommand VM_UploadLearningData { get; private set; }
+        public ICommand VM_UploadAlgorithmData { get; private set; }
 
         private string GetFilename(string filePath)
         {
@@ -69,19 +81,19 @@ namespace Adv_Prog_2.viewmodel
             }
             return filePath;
         }
-        public void UploadFlightData()
+        public void UploadLearningData()
         {
             // ask the user for a CSV file
             string filePath = UploadFile("csv");
             if (!String.IsNullOrEmpty(filePath))
             {
                 // upload the file
-                model.SetFlightData(filePath);
+                model.SetLearningData(filePath);
                 // update the GUI to notify the user that the file was accepted
-                VM_FlightDataFileName = GetFilename(filePath);
-                VM_FlightDataFileNameColor = green;
-                NotifyPropertyChanged("VM_FlightDataFileName");
-                NotifyPropertyChanged("VM_FlightDataFileNameColor");
+                VM_LearningDataFileName = GetFilename(filePath);
+                VM_LearningDataFileNameColor = green;
+                NotifyPropertyChanged("VM_LearningDataFileName");
+                NotifyPropertyChanged("VM_LearningDataFileNameColor");
             }
         }
 
@@ -101,7 +113,7 @@ namespace Adv_Prog_2.viewmodel
             }
         }
 
-        public void UploadAnomalyData()
+        public void UploadFlightData()
         {
             // ask the user for a CSV file
             string filePath = UploadFile("csv");
@@ -110,10 +122,25 @@ namespace Adv_Prog_2.viewmodel
                 // upload the file
                 model.SetAnomalyData(filePath);
                 // update the GUI to notify the user that the file was accepted
-                VM_AnomalyDataFileName = GetFilename(filePath);
-                VM_AnomalyDataFileNameColor = green;
-                NotifyPropertyChanged("VM_AnomalyDataFileName");
-                NotifyPropertyChanged("VM_AnomalyDataFileNameColor");
+                VM_FlightDataFileName = GetFilename(filePath);
+                VM_FlightDataFileNameColor = green;
+                NotifyPropertyChanged("VM_FlightDataFileName");
+                NotifyPropertyChanged("VM_FlightDataFileNameColor");
+            }
+        }
+        public void UploadAlgorithmData()
+        {
+            // ask the user for a DLL file
+            string filePath = UploadFile("dll");
+            if (!String.IsNullOrEmpty(filePath))
+            {
+                // upload the file
+                model.SetAlgorithmData(filePath);
+                // update the GUI to notify the user that the file was accepted
+                VM_AlgorithmDataFileName = GetFilename(filePath);
+                VM_AlgorithmDataFileNameColor = green;
+                NotifyPropertyChanged("VM_AlgorithmDataFileName");
+                NotifyPropertyChanged("VM_AlgorithmDataFileNameColor");
             }
         }
         #endregion

@@ -2,8 +2,10 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
+using Adv_Prog_2.model.data;
+using Adv_Prog_2.model.net;
 
-namespace Adv_Prog_2
+namespace Adv_Prog_2.model.mediacontrol
 {
     class FlightSimPlayer : ISimPlayer
     {
@@ -32,23 +34,27 @@ namespace Adv_Prog_2
         // used to read flight data
         private IFileIterator fileIterator;
 
+        #region property_changed
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
 
+        #region ctor
         public FlightSimPlayer(INetClient netClient, IFileIterator fileIterator)
         {
             this.netClient = netClient;
             this.fileIterator = fileIterator;
+            // call these functions everytime new data is read
             fileIterator.OnLineChanged += SendCurrentFrame;
             fileIterator.OnLineChanged += UpdateTimerString;
             fileIterator.OnLineChanged += Sleep;
         }
+        #endregion
 
-        #region Properties
-
+        #region properties
         public bool IsPlaying
         {
             get { return isPlaying; }
@@ -139,8 +145,9 @@ namespace Adv_Prog_2
 
         #endregion
 
-        #region SimulationLoop
-
+        // Functions related to playing the simulation
+        // and updating related values (e.g. speed timer)
+        #region simulation_loop
         private int calcSecondsPassed(int frame)
         {
             // divide by the default amount of frames sent per second
@@ -156,7 +163,7 @@ namespace Adv_Prog_2
                 t.Hours, t.Minutes, t.Seconds);
         }
 
-        public void UpdateTimerString()
+        private void UpdateTimerString()
         {
             if (speed > 0)
             {
@@ -166,7 +173,7 @@ namespace Adv_Prog_2
             }
         }
 
-        public void Sleep()
+        private void Sleep()
         {
             if (IsPlaying && speed > 0)
             {
@@ -192,10 +199,16 @@ namespace Adv_Prog_2
                 {
                     // move to the next frame
                     Frame++;
+                    // Also, note that when the frame changes
+                    // fileIterator.OnLineChanged is called
+                    // including the events simPlayer added
+                    // (e.g. Sleep)
                 }
                 else
                 {
-                    // if speed == 0 then we want to simply sleep and not update the server
+                    // if speed == 0:
+                    // we don't want to send data to the server
+                    // but we also don't want to exit the function
                     Thread.Sleep(DEFAULT_SLEEP_MS);
                 }
             }
@@ -208,9 +221,11 @@ namespace Adv_Prog_2
 
         #endregion
 
+        // Private Media Control Functions
+        // Added a public SendControl function that calls
+        // the appropriate media control (according to the param)
         #region media_controls
-
-        public void Play()
+        private void Play()
         {
             if (!IsPlaying)
             {
@@ -223,29 +238,29 @@ namespace Adv_Prog_2
             }
         }
 
-        public void Stop()
+        private void Stop()
         {
             Pause();
             // return to the beginning of the simulation
             Frame = 0;
         }
 
-        public void Pause()
+        private void Pause()
         {
             IsPlaying = false;
         }
 
-        public void FastForward()
+        private void FastForward()
         {
             Speed += SPEED_SKIP;
         }
 
-        public void FastBackwards()
+        private void FastBackwards()
         {
             Speed -= SPEED_SKIP;
         }
 
-        public void FrameForward()
+        private void FrameForward()
         {
             if (Frame + FRAME_SKIP > FrameCount)
             {
@@ -256,7 +271,7 @@ namespace Adv_Prog_2
             }
         }
 
-        public void FrameBackwards()
+        private void FrameBackwards()
         {
             if (Frame - FRAME_SKIP < 0)
             {
@@ -265,6 +280,24 @@ namespace Adv_Prog_2
             else
             {
                 Frame -= FRAME_SKIP;
+            }
+        }
+
+        public void SendControl(string control)
+        {
+            switch(control)
+            {
+                case "Play": Play(); break;
+                case "Pause": Pause(); break;
+                case "Stop": Stop(); break;
+                case "FrameBackwards": FrameBackwards(); break;
+                case "FrameForward": FrameForward(); break;
+                case "FastBackwards": FastBackwards(); break;
+                case "FastForward": FastForward(); break;
+                default:
+                    // unrecognized operation
+                    // do nothing
+                    break;
             }
         }
 

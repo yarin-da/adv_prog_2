@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Adv_Prog_2
+namespace Adv_Prog_2.model.mediacontrol
 {
     // simulation player
     internal interface ISimPlayer : INotifyPropertyChanged
@@ -13,14 +13,7 @@ namespace Adv_Prog_2
         public float Speed { get; set; }
         public int Frame { get; set; }
 
-        public void Play();
-        public void Pause();
-        public void Stop();
-        public void FastForward();
-        public void FastBackwards();
-        public void FrameForward();
-        public void FrameBackwards();
-
+        public void SendControl(string control);
         public void LoadFile(string filePath);
     }
 }

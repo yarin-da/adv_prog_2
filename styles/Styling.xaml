@@ -31,12 +31,14 @@
         </Style.Triggers>
     </Style>
 
+    <!-- Textbox -->
     <Style TargetType="{x:Type TextBox}" x:Key="Regular">
         <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextBoxForegroundBrush}" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style>
     
+    <!-- Media Control Slider -->
     <Style x:Key="RepeatButtonTransparent" TargetType="{x:Type RepeatButton}">
             <Setter Property="OverridesDefaultStyle" Value="true"/>
             <Setter Property="Background" Value="Transparent"/>

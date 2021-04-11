@@ -2,7 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace Adv_Prog_2
+namespace Adv_Prog_2.model.net
 {
     class FlightNetClient : INetClient
     {
@@ -28,6 +28,7 @@ namespace Adv_Prog_2
             if (socket != null)
             {
                 socket.Close();
+                // mark the socket as unusable
                 socket = null;
             }
         }

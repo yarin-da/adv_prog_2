@@ -26,12 +26,14 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <Label Width="50" Content="Server" HorizontalContentAlignment="Center" />
             <TextBox 
                             Style="{StaticResource Regular}"
-                            Width="150" 
+                            MinWidth="150" 
                             Name="ServerTextBox" 
                             Text="127.0.0.1" />
         </StackPanel>
@@ -39,7 +41,7 @@
             <Label Width="50" Content="Port" HorizontalContentAlignment="Center" />
             <TextBox
                             Style="{StaticResource Regular}"
-                            Width="150" 
+                            MinWidth="150" 
                             Name="PortTextBox" 
                             Text="5400" />
         </StackPanel>
@@ -60,29 +62,37 @@
             Command="{Binding Path=VM_UploadMetaData, Mode=OneWay}" />
         <Button 
             Grid.Row="5" 
-            Content="Upload Anomaly Data file (csv)" 
-            Command="{Binding Path=VM_UploadAnomalyData, Mode=OneWay}" />
+            Content="Upload Learning Data file (csv)" 
+            Command="{Binding Path=VM_UploadLearningData, Mode=OneWay}" />
         <Button 
             Grid.Row="6" 
+            Content="Upload Anomaly Algorithm (dll)" 
+            Command="{Binding Path=VM_UploadAlgorithmData, Mode=OneWay}" />
+        <Button 
+            Grid.Row="7" 
             Content="Help" 
             Command="{Binding Path=VM_Help, Mode=OneWay}" />
         
         <!-- Status labels -->
-        <Label Grid.Row="7"
+        <Label Grid.Row="8"
                        Content="{Binding VM_ConnectStatus, Mode=OneWay}" 
                        Foreground="{Binding VM_ConnectStatusColor, Mode=OneWay}" 
                        HorizontalContentAlignment="Center" />
-        <Label Grid.Row="8"
+        <Label Grid.Row="9"
                        Content="{Binding VM_FlightDataFileName, Mode=OneWay}" 
                        Foreground="{Binding VM_FlightDataFileNameColor, Mode=OneWay}" 
                        HorizontalContentAlignment="Center" />
-        <Label Grid.Row="9"
+        <Label Grid.Row="10"
                        Content="{Binding VM_MetaDataFileName, Mode=OneWay}" 
                        Foreground="{Binding VM_MetaDataFileNameColor, Mode=OneWay}" 
                        HorizontalContentAlignment="Center" />
-        <Label Grid.Row="10"
-                       Content="{Binding VM_AnomalyDataFileName, Mode=OneWay}" 
-                       Foreground="{Binding VM_AnomalyDataFileNameColor, Mode=OneWay}" 
+        <Label Grid.Row="11"
+                       Content="{Binding VM_LearningDataFileName, Mode=OneWay}" 
+                       Foreground="{Binding VM_LearningDataFileNameColor, Mode=OneWay}" 
+                       HorizontalContentAlignment="Center" />
+        <Label Grid.Row="12"
+                       Content="{Binding VM_AlgorithmDataFileName, Mode=OneWay}" 
+                       Foreground="{Binding VM_AlgorithmDataFileNameColor, Mode=OneWay}" 
                        HorizontalContentAlignment="Center" />
     </Grid>
 </UserControl>

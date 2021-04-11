@@ -1,15 +1,16 @@
-﻿using System.ComponentModel;
-using OxyPlot;
-using OxyPlot.Axes;
+﻿using OxyPlot;
 using OxyPlot.Series;
 using System.Timers;
+using Adv_Prog_2.model.data;
 
 namespace Adv_Prog_2.model.graph
 {
     class MonitorGraph : BaseGraph
     {
-        public MonitorGraph(string graphID, DataAnalyzer dataAnalyzer, IFileIterator fileIterator)
-            : base(graphID, dataAnalyzer, fileIterator) { }
+        #region ctor
+        public MonitorGraph(DataAnalyzer dataAnalyzer, IFileIterator fileIterator)
+            : base(dataAnalyzer, fileIterator) { }
+        #endregion
 
         public void LoadData(float[] values, string title)
         {
@@ -35,22 +36,6 @@ namespace Adv_Prog_2.model.graph
             Plot = plotModel;
         }
 
-        // display linear regression
-        public void LoadData(string title, float a, float b)
-        {
-            plotModel.Series.Clear();
-            const float startX = 0.0f;
-            const float endX = 1.0f;
-            const float increment = 0.1f;
-            FunctionSeries series = new FunctionSeries(x => a * x + b, startX, endX, increment, "linear_reg");
-            plotModel.Series.Add(series);
-            plotModel.InvalidatePlot(true);
-            // y axis
-            plotModel.Axes[0].TextColor = OxyColors.White;
-            plotModel.Axes[0].LabelFormatter = null;
-            Plot = plotModel;
-        }
-
         protected override ElapsedEventHandler GetCallback(string feature)
         {
             const int DATAPOINTS_PER_GRAPH = 100;
@@ -66,6 +51,7 @@ namespace Adv_Prog_2.model.graph
 
         public override void SetDataCallback(string feature)
         {
+            // reinitialize the timer
             ResetTimer(feature);
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace Adv_Prog_2
+﻿namespace Adv_Prog_2.model.data
 {
     interface IFileIterator
     {

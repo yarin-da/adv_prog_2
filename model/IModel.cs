@@ -19,10 +19,6 @@ namespace Adv_Prog_2
         #endregion
 
         #region joystick
-        public float MaxThrottle { get; }
-        public float MinThrottle { get; }
-        public float MaxRudder { get; }
-        public float MinRudder { get; }
         public float Throttle1 { get; }
         public float Throttle2 { get; }
         public float Rudder { get; }
@@ -31,7 +27,6 @@ namespace Adv_Prog_2
         #endregion
 
         #region graphs
-        public IList<DataPoint> AnomalyPoints { get; }
         public List<string> ColumnList { get; }
         public PlotModel SelectedPlot { get; }
         public PlotModel CorrelatedPlot { get; }
@@ -58,16 +53,14 @@ namespace Adv_Prog_2
         public void Play();
         public void Pause();
         public void Stop();
-        public void FastForward();
-        public void FastBackwards();
-        public void FrameForward();
-        public void FrameBackwards();
+        public void SendMediaControl(string control);
         #endregion
 
         #region data_files
-        public void SetFlightData(string filePath);
+        public void SetLearningData(string filePath);
         public void SetAnomalyData(string filePath);
         public void SetMetaData(string filePath);
+        public void SetAlgorithmData(string filePath);
         #endregion
 
         public void CloseApplication();

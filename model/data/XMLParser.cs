@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Adv_Prog_2
+namespace Adv_Prog_2.model.data
 {
     class XMLParser
     {
+        // cache the titles we extracted from the XML
         private List<string> titles = null;
 
         public bool HasData { get { return titles != null; } }
@@ -14,11 +15,13 @@ namespace Adv_Prog_2
             return titles;
         }
 
+        // load the titles from the XML file
         public void LoadFile(string filePath)
         {
             titles = ParseXML(filePath);
         }
 
+        // count occurrences of 'toCount' in 'list'
         private int Count(List<string> list, string toCount)
         {
             int counter = 0;
@@ -29,8 +32,13 @@ namespace Adv_Prog_2
             return counter;
         }
 
+        // handle a situation where a list has duplicate titles
+        // this is done by adding a postfix number
+        // e.g. if there are 2 columns named 'throttle' 
+        //      they are converted to 'throttle1' and 'throttle2'
         private List<string> HandleDuplicates(List<string> titles)
         {
+            // find all duplicate titles
             HashSet<string> duplicates = new HashSet<string>();
             foreach (string title in titles) {
                 if (Count(titles, title) > 1)
@@ -38,7 +46,10 @@ namespace Adv_Prog_2
                     duplicates.Add(title);
                 }
             }
-
+            
+            // for each duplicate title, find each occurence
+            // add a counter value as a postfix
+            // this is done to make sure they all end up with unique names
             foreach (string dup in duplicates)
             {
                 int counter = 1;

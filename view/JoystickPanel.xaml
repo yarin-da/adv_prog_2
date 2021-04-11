@@ -25,8 +25,8 @@
                     MinWidth="10"
                     Focusable="False"
                     Foreground="{StaticResource MidGrayBlueBrush}"
-                    Minimum="{Binding VM_MinThrottle, Mode=OneWay}"
-                    Maximum="{Binding VM_MaxThrottle, Mode=OneWay}"
+                    Minimum="0"
+                    Maximum="1"
                     Value="{Binding VM_Throttle1, Mode=OneWay}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
@@ -42,8 +42,8 @@
                     Margin="5 20 5 20"
                     Focusable="False"
                     Foreground="{StaticResource MidGrayBlueBrush}"
-                    Minimum="{Binding VM_MinThrottle, Mode=OneWay}"
-                    Maximum="{Binding VM_MaxThrottle, Mode=OneWay}"
+                    Minimum="0"
+                    Maximum="1"
                     Value="{Binding VM_Throttle2, Mode=OneWay}"/>
             </StackPanel>
         </StackPanel>
@@ -91,8 +91,8 @@
                     MinHeight="10"
                     Focusable="False"
                     Foreground="{StaticResource MidGrayBlueBrush}"
-                    Minimum="{Binding VM_MinRudder, Mode=OneWay}"
-                    Maximum="{Binding VM_MaxRudder, Mode=OneWay}"
+                    Minimum="-1"
+                    Maximum="1"
                     Value="{Binding VM_Rudder, Mode=OneWay}"/>
             </StackPanel>
         </Grid>

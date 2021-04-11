@@ -1,6 +1,6 @@
-﻿using static Adv_Prog_2.IFileIterator;
+﻿using static Adv_Prog_2.model.data.IFileIterator;
 
-namespace Adv_Prog_2
+namespace Adv_Prog_2.model.data
 {
     class FlightDataIterator : IFileIterator
     {
@@ -21,7 +21,7 @@ namespace Adv_Prog_2
 
         public bool HasNext { 
             get 
-            { 
+            {
                 if (lines == null)
                 {
                     return false;
@@ -52,6 +52,7 @@ namespace Adv_Prog_2
             }
         }
 
+        // the index of the current line we're reading
         public int LineNumber {
             get 
             {
@@ -59,6 +60,8 @@ namespace Adv_Prog_2
             }
             set 
             {
+                // set the current line number
+                // we lock this code because it may be accessed by different threads
                 lock (LineNumberLocker)
                 {
                     if (value >= 0 && lines != null && value < LineCount)
@@ -66,7 +69,7 @@ namespace Adv_Prog_2
                         lineNum = value;
                     }
                 }
-                OnLineChangedUpdate();
+                OnLineChanged?.Invoke();
             }
         }
 
@@ -76,11 +79,6 @@ namespace Adv_Prog_2
             {
                 LineNumber++;
             }
-        }
-
-        private void OnLineChangedUpdate()
-        {
-            OnLineChanged?.Invoke();
         }
     }
 }

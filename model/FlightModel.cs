@@ -7,30 +7,34 @@ using Adv_Prog_2.model.joystick;
 using Adv_Prog_2.model.dashboard;
 using OxyPlot;
 using Adv_Prog_2.model.data;
+using Adv_Prog_2.model.net;
+using Adv_Prog_2.model.mediacontrol;
 
 namespace Adv_Prog_2.model
 {
     class FlightModel : IModel
     {
-
-        private INetClient netClient;
-        private IFileIterator fileIterator;
         private DataAnalyzer dataAnalyzer;
+        private AnomalyAnalyzer anomalyAnalyzer;
+        private LibraryLoader libLoader;
         private XMLParser dataParser;
-
-        private ISimPlayer simPlayer;
 
         private BaseGraph selectedPlot;
         private BaseGraph correlatedPlot;
         private BaseGraph anomalyPlot;
 
+        private INetClient netClient;
+        private IFileIterator fileIterator;
+        private ISimPlayer simPlayer;
         private IJoystick joystick;
         private IDashboard dashboard;
 
         private string selectedColumn = "";
 
         #region ctor
-
+        // The model operates as a singleton
+        // This is because every ViewModel needs to communicate 
+        // with the same model object
         private static IModel instance = null;
         public static IModel GetInstance()
         {
@@ -41,29 +45,27 @@ namespace Adv_Prog_2.model
             return instance;
         }
 
+        // Initialize Objects and add notify events
         private FlightModel()
         {
             netClient = new FlightNetClient();
             fileIterator = new FlightDataIterator();
             dataParser = new XMLParser();
             dataAnalyzer = new DataAnalyzer();
-
-            selectedPlot = new MonitorGraph("SelectedPlot", dataAnalyzer, fileIterator);
-            selectedPlot.PropertyChanged += PropertyChangedFunction;
-            correlatedPlot = new MonitorGraph("CorrelatedPlot", dataAnalyzer, fileIterator);
-            correlatedPlot.PropertyChanged += PropertyChangedFunction;
-            anomalyPlot = new AnomalyGraph("AnomalyPlot", dataAnalyzer, fileIterator);
-            anomalyPlot.PropertyChanged += PropertyChangedFunction;
-
+            libLoader = new LibraryLoader();
+            anomalyAnalyzer = new AnomalyAnalyzer(libLoader);
+            selectedPlot = new MonitorGraph(dataAnalyzer, fileIterator);
+            correlatedPlot = new MonitorGraph(dataAnalyzer, fileIterator);
+            anomalyPlot = new AnomalyGraph(dataAnalyzer, fileIterator, anomalyAnalyzer);
             simPlayer = new FlightSimPlayer(netClient, fileIterator);
-            simPlayer.PropertyChanged += PropertyChangedFunction;
-
             joystick = new FlightJoystick(fileIterator, dataAnalyzer);
-            joystick.PropertyChanged += PropertyChangedFunction;
             dashboard = new FlightDashboard(fileIterator, dataAnalyzer);
+            
+            // add notify events
+            simPlayer.PropertyChanged += PropertyChangedFunction;
+            joystick.PropertyChanged += PropertyChangedFunction;
             dashboard.PropertyChanged += PropertyChangedFunction;
         }
-
         #endregion
 
         #region property_changed
@@ -91,21 +93,14 @@ namespace Adv_Prog_2.model
         #endregion
 
         #region joystick
-        public float MaxThrottle { get { return joystick.MaxThrottle; } }
-        public float MinThrottle { get { return joystick.MinThrottle; } }
         public float Throttle1 { get { return joystick.Throttle1; } }
         public float Throttle2 { get { return joystick.Throttle2; } }
-        public float MaxRudder { get { return joystick.MaxRudder; } }
-        public float MinRudder { get { return joystick.MinRudder; } }
         public float Rudder { get { return joystick.Rudder; } }
         public float KnobX { get { return joystick.KnobX; } }
         public float KnobY { get { return joystick.KnobY; } }
-
         #endregion
 
         #region graphs
-
-        public IList<DataPoint> AnomalyPoints { get { return anomalyPlot.Points;  } }
         public List<string> ColumnList 
         { 
             get 
@@ -140,7 +135,6 @@ namespace Adv_Prog_2.model
                 anomalyPlot.SetDataCallback(selectedColumn);
             } 
         }
-
         #endregion
 
         #region network_client
@@ -150,6 +144,7 @@ namespace Adv_Prog_2.model
         
         public bool Connect() {
             int port;
+            // TryParse incase the user entered non-float string
             if (int.TryParse(ServerPort, out port))
             {
                 try
@@ -172,7 +167,6 @@ namespace Adv_Prog_2.model
         #endregion
 
         #region media_controls_and_properties
-
         public int FrameCount
         {
             get { return simPlayer.FrameCount; }
@@ -203,14 +197,15 @@ namespace Adv_Prog_2.model
         }
 
         public void Play() 
-        { 
+        {
             if (netClient.IsConnected)
             {
                 // start updating the graphs
                 selectedPlot.StartCallbackTimer();
                 correlatedPlot.StartCallbackTimer();
                 anomalyPlot.StartCallbackTimer();
-                simPlayer.Play();
+                // start playing the simulation
+                SendMediaControl("Play");
             }
         }
         public void Pause() 
@@ -219,7 +214,8 @@ namespace Adv_Prog_2.model
             selectedPlot.StopCallbackTimer();
             correlatedPlot.StopCallbackTimer();
             anomalyPlot.StopCallbackTimer();
-            simPlayer.Pause(); 
+            // stop playing the simulation
+            SendMediaControl("Pause");
         }
         public void Stop() 
         {
@@ -227,53 +223,50 @@ namespace Adv_Prog_2.model
             selectedPlot.StopCallbackTimer();
             correlatedPlot.StopCallbackTimer();
             anomalyPlot.StopCallbackTimer();
-            simPlayer.Stop();
+            // stop playing the simulation
+            SendMediaControl("Stop");
         }
 
-        public void FastForward()
+        public void SendMediaControl(string control)
         {
-            simPlayer.FastForward();
-        }
-
-        public void FastBackwards()
-        {
-            simPlayer.FastBackwards();
-        }
-
-        public void FrameForward()
-        {
-            simPlayer.FrameForward();
-        }
-
-        public void FrameBackwards()
-        {
-            simPlayer.FrameBackwards();
+            simPlayer.SendControl(control);
         }
 
         #endregion
 
         #region data_files
-        public void SetFlightData(string filePath) 
+        public void SetLearningData(string filePath) 
         {
-            simPlayer.LoadFile(filePath);
-            dataAnalyzer.SetFlightData(filePath);
+            anomalyAnalyzer.SetLearningData(filePath);
         }
 
         public void SetMetaData(string filePath) 
         {
-            // update the columnList and notify the view
+            // update the columnList
             dataParser.LoadFile(filePath);
-            dataAnalyzer.SetMetaData(dataParser.GetTitles());
+            // parse the XML file to get the column titles
+            var titles = dataParser.GetTitles();
+            dataAnalyzer.SetMetaData(titles);
+            anomalyAnalyzer.SetMetaData(dataAnalyzer.StringListToArr(titles));
+            // notify the view
             NotifyPropertyChanged("ColumnList");
         }
 
         public void SetAnomalyData(string filePath)
         {
-            // TODO
+            simPlayer.LoadFile(filePath);
+            dataAnalyzer.SetFlightData(filePath);
+            anomalyAnalyzer.SetFlightData(filePath);
+        }
+
+        public void SetAlgorithmData(string filePath)
+        {
+            // Load the DLL file
+            libLoader.LoadLibrary(filePath);
         }
         #endregion
 
-        // close all resources when the user exits the application
+        // close all resources when the user exits the application 
         public void CloseApplication()
         {
             // stop updating the graphs 
@@ -281,9 +274,10 @@ namespace Adv_Prog_2.model
             correlatedPlot.StopCallbackTimer();
             anomalyPlot.StopCallbackTimer();
             // stop sending frames to the server
-            simPlayer.Stop();
+            SendMediaControl("Stop");
             // destroy data resources
             dataAnalyzer.DestroyResources();
+            anomalyAnalyzer.DestroyResources();
             // close the socket
             netClient.Disconnect();
         }

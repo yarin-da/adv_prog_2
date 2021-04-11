@@ -1,47 +1,33 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Timers;
+using Adv_Prog_2.model.data;
 using OxyPlot;
 using OxyPlot.Axes;
 
 namespace Adv_Prog_2.model.graph
 {
-    abstract class BaseGraph : INotifyPropertyChanged
+    abstract class BaseGraph
     {
+        // timer used to update the graphs every few ms
         public const int UPDATE_INTERVAL_MS = 150;
-        private string graphID;
-        protected PlotModel plotModel;
         protected Timer refreshPlotsTimer;
+        // the actual PlotModel to display in the view
+        protected PlotModel plotModel;
+        // used to fetch the data to plot on the graph
         protected DataAnalyzer dataAnalyzer;
         protected IFileIterator fileIterator;
 
-        public IList<DataPoint> Points { get; protected set; }
-
         public PlotModel Plot 
         { 
-            get
-            {
-                return plotModel;
-            }
-            protected set
-            {
-                plotModel = value;
-                NotifyPropertyChanged(graphID);
-            }
+            get { return plotModel; }
+            protected set { plotModel = value; }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void NotifyPropertyChanged(string property)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-        }
-
-        public BaseGraph(string graphID, DataAnalyzer dataAnalyzer, IFileIterator fileIterator)
+        #region ctor
+        public BaseGraph(DataAnalyzer dataAnalyzer, IFileIterator fileIterator)
         {
             this.dataAnalyzer = dataAnalyzer;
             this.fileIterator = fileIterator;
-            this.graphID = graphID;
             plotModel = new PlotModel();
             this.refreshPlotsTimer = new Timer();
             plotModel.TextColor = OxyColors.White;
@@ -64,6 +50,7 @@ namespace Adv_Prog_2.model.graph
 
             Plot = plotModel;
         }
+        #endregion
 
         // used so that the graph will have a static width
         // otherwise the axis labels can cause changes to the width
@@ -88,39 +75,22 @@ namespace Adv_Prog_2.model.graph
             StartCallbackTimer();
         }
 
-        protected void SetAxesMinMax(string feature)
-        {
-            // feature's values are in the x axis
-            plotModel.Axes[1].Minimum = dataAnalyzer.GetMin(feature);
-            plotModel.Axes[1].Maximum = dataAnalyzer.GetMax(feature);
-
-            // correlated-feature's values are in the y axis
-            string correlated = dataAnalyzer.GetCorrelatedColumn(feature);
-            plotModel.Axes[0].Minimum = dataAnalyzer.GetMin(correlated);
-            plotModel.Axes[0].Maximum = dataAnalyzer.GetMax(correlated);
-
-            // make sure we don't get a zero length axis (otherwise oxyplot will throw an error)
-            if (plotModel.Axes[1].Minimum == plotModel.Axes[1].Maximum)
-            {
-                plotModel.Axes[1].Maximum = plotModel.Axes[1].Minimum + 1;
-            }
-            if (plotModel.Axes[0].Minimum == plotModel.Axes[0].Maximum)
-            {
-                plotModel.Axes[0].Maximum = plotModel.Axes[0].Minimum + 1;
-            }
-        }
-
         protected abstract ElapsedEventHandler GetCallback(string feature);
 
+        // let the subclasses set the initial drawing
+        // and setting up the callback function that draws
+        // new plots every few ms
         public abstract void SetDataCallback(string feature);
         
         public void StopCallbackTimer()
         {
+            // stop updating the graph
             refreshPlotsTimer.Stop();
         }
 
         public void StartCallbackTimer()
         {
+            // start updating the graph
             refreshPlotsTimer.Start();
         }
     }
