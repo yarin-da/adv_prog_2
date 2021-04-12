@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Adv_Prog_2.model.FlightModel" Collapsed="true">
+    <Position X="5" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Events" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="anomalyAnalyzer" Type="Adv_Prog_2.model.data.AnomalyAnalyzer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.375" Y="2" />
+        <Point X="6.375" Y="1.531" />
+        <Point X="8" Y="1.531" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="dataAnalyzer" Type="Adv_Prog_2.model.data.DataAnalyzer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.438" Y="2.562" />
+        <Point X="6.438" Y="3.281" />
+        <Point X="8" Y="3.281" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="fileIterator" Type="Adv_Prog_2.model.data.IFileIterator" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6" Y="2" />
+        <Point X="6" Y="0.781" />
+        <Point X="8" Y="0.781" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="joystick" Type="Adv_Prog_2.model.joystick.IJoystick" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.062" Y="2" />
+        <Point X="5.062" Y="1.096" />
+        <Point X="3" Y="1.096" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="dataParser" Type="Adv_Prog_2.model.data.XMLParser" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.125" Y="2.562" />
+        <Point X="5.125" Y="4.015" />
+        <Point X="3" Y="4.015" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="simPlayer" Type="Adv_Prog_2.model.mediacontrol.ISimPlayer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.062" Y="2.562" />
+        <Point X="5.062" Y="3.486" />
+        <Point X="3" Y="3.486" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>EgSgQiAwAAMQIIFIDCJAAIABhEBAhIRA4AVkgBDYAAE=</HashCode>
+      <FileName>model\FlightModel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="anomalyAnalyzer" />
+      <Field Name="libLoader" />
+      <Field Name="dataAnalyzer" />
+      <Field Name="graphPlot" />
+      <Field Name="fileIterator" />
+      <Field Name="joystick" />
+      <Field Name="dashboard" />
+      <Field Name="dataParser" />
+      <Field Name="netClient" />
+      <Field Name="simPlayer" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Adv_Prog_2.model.data.AnomalyAnalyzer" Collapsed="true">
+    <Position X="8" Y="1.25" Width="1.5" />
+    <NestedTypes>
+      <Delegate Name="Adv_Prog_2.model.data.AnomalyAnalyzer.CreateTimeSeriesFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\AnomalyAnalyzer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Adv_Prog_2.model.data.AnomalyAnalyzer.CreateDetectorFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\AnomalyAnalyzer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Adv_Prog_2.model.data.AnomalyAnalyzer.DestroyFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\AnomalyAnalyzer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Adv_Prog_2.model.data.AnomalyAnalyzer.GetTimeStepsFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\AnomalyAnalyzer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Adv_Prog_2.model.data.AnomalyAnalyzer.GetTimeStepAtFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\AnomalyAnalyzer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Adv_Prog_2.model.data.AnomalyAnalyzer.GetFuncDataFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\AnomalyAnalyzer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="Adv_Prog_2.model.data.AnomalyAnalyzer.GetFuncDataAtFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\AnomalyAnalyzer.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gxkEAAIAQAAAAgAAAAIAEgEAADBIAAQCAEAkgAABABA=</HashCode>
+      <FileName>model\data\AnomalyAnalyzer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="libLoader" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Adv_Prog_2.model.data.LibraryLoader" Collapsed="true">
+    <Position X="8" Y="2.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="Adv_Prog_2.model.data.LibraryLoader.NativeMethods" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\LibraryLoader.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="Adv_Prog_2.model.data.LibraryLoader.UpdateFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>model\data\LibraryLoader.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIABAAAAQAAAAAAAAAAAAAQAAAACQAAAAAA=</HashCode>
+      <FileName>model\data\LibraryLoader.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adv_Prog_2.model.data.DataAnalyzer" Collapsed="true">
+    <Position X="8" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CBgAAAIAcBAAAAAAAAAAAACAkABAAEQQAABAQDgAAAA=</HashCode>
+      <FileName>model\data\DataAnalyzer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adv_Prog_2.model.graph.BaseGraph" Collapsed="true">
+    <Position X="8" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABgAAAAAAAAAAAJAAAAAAAAAABAAIAAAAEEAACAQMA=</HashCode>
+      <FileName>model\graph\BaseGraph.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dataAnalyzer" />
+      <Field Name="fileIterator" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Adv_Prog_2.model.graph.AnomalyGraph" Collapsed="true">
+    <Position X="9.25" Y="4.75" Width="1.5" />
+    <AssociationLine Name="anomalyAnalyzer" Type="Adv_Prog_2.model.data.AnomalyAnalyzer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="10.312" Y="4.75" />
+        <Point X="10.312" Y="1.75" />
+        <Point X="9.958" Y="1.75" Type="JumpStart" />
+        <Point X="9.792" Y="1.75" Type="JumpEnd" />
+        <Point X="9.5" Y="1.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAEAAAAAAAAAAACAABAAAAAAAAAAgAAAAAUQoA=</HashCode>
+      <FileName>model\graph\AnomalyGraph.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="anomalyAnalyzer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Adv_Prog_2.model.graph.MonitorGraph" Collapsed="true">
+    <Position X="6.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAQIA=</HashCode>
+      <FileName>model\graph\MonitorGraph.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Adv_Prog_2.model.data.XMLParser" Collapsed="true">
+    <Position X="1.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAQAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAFAA=</HashCode>
+      <FileName>model\data\XMLParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Adv_Prog_2.model.data.IFileIterator" Collapsed="true">
+    <Position X="8" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAQAAAIAAQAAAQQAAAAAAAAAAAABAA=</HashCode>
+      <FileName>model\data\IFileIterator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Adv_Prog_2.model.joystick.IJoystick" Collapsed="true">
+    <Position X="1.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAQAAgABAAAAA=</HashCode>
+      <FileName>model\joystick\IJoystick.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Adv_Prog_2.model.dashboard.IDashboard" Collapsed="true">
+    <Position X="1.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAEAACAAAAAAAAAAAAAAAARAAAAAAAA=</HashCode>
+      <FileName>model\dashboard\IDashboard.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Adv_Prog_2.model.net.INetClient" Collapsed="true">
+    <Position X="1.5" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAABAAEAAAIAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>model\net\INetClient.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Adv_Prog_2.model.mediacontrol.ISimPlayer" Collapsed="true">
+    <Position X="1.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAACAAAAAABAAQAAAAAQAAAAAAIBAE=</HashCode>
+      <FileName>model\mediacontrol\ISimPlayer.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
