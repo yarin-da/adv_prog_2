@@ -1,0 +1,121 @@
+﻿<UserControl x:Class="Adv_Prog_2.SessionSetupPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Adv_Prog_2"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <!-- Buttons and Labels -->
+    <Border
+        BorderBrush="{StaticResource MidGrayBlueBrush}"
+        BorderThickness="1"
+        Padding="2"
+        CornerRadius="5">
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="Background" Value="Black" />
+                    <Setter Property="Foreground" Value="AliceBlue" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Label 
+                Width="50" 
+                Content="Server" 
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center" />
+                <TextBox 
+                Style="{StaticResource Regular}"
+                MinWidth="150"
+                VerticalContentAlignment="Center"
+                Name="ServerTextBox" 
+                Text="127.0.0.1" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <Label 
+                Width="50" 
+                Content="Port" 
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center" />
+                <TextBox
+                Style="{StaticResource Regular}"
+                MinWidth="150" 
+                VerticalContentAlignment="Center"
+                Name="PortTextBox" 
+                Text="5400" />
+            </StackPanel>
+
+            <!-- Setup buttons -->
+            <!-- Load Files, Connect, Help -->
+            <Button 
+                Grid.Row="2" 
+                Style="{StaticResource Menu}"
+                Content="{Binding VM_ConnectButtonText, Mode=OneWay}" 
+                Command="{Binding Path=VM_ConnectCommand, Mode=OneWay}" />
+            <Button 
+                Grid.Row="3" 
+                Style="{StaticResource Menu}"
+                Content="Upload Flight Data file (csv)" 
+                Command="{Binding Path=VM_UploadFlightData, Mode=OneWay}" />
+            <Button 
+                Grid.Row="4" 
+                Style="{StaticResource Menu}"
+                Content="Upload Meta Data file (xml)" 
+                Command="{Binding Path=VM_UploadMetaData, Mode=OneWay}" />
+            <Button 
+                Grid.Row="5" 
+                Style="{StaticResource Menu}"
+                Content="Upload Learning Data file (csv)" 
+                Command="{Binding Path=VM_UploadLearningData, Mode=OneWay}" />
+            <Button 
+                Grid.Row="6" 
+                Style="{StaticResource Menu}"
+                Content="Upload Anomaly Algorithm (dll)" 
+                Command="{Binding Path=VM_UploadAlgorithmData, Mode=OneWay}" />
+            <Button 
+                Grid.Row="7" 
+                Style="{StaticResource Menu}"
+                Content="Help" 
+                Command="{Binding Path=VM_Help, Mode=OneWay}" />
+
+            <!-- Status labels -->
+            <Label Grid.Row="8"
+                    Content="{Binding VM_ConnectStatus, Mode=OneWay}" 
+                    Foreground="{Binding VM_ConnectStatusColor, Mode=OneWay}" 
+                    HorizontalContentAlignment="Center" />
+            <Label Grid.Row="9"
+                    Content="{Binding VM_FlightDataFileName, Mode=OneWay}" 
+                    Foreground="{Binding VM_FlightDataFileNameColor, Mode=OneWay}" 
+                    HorizontalContentAlignment="Center" />
+            <Label Grid.Row="10"
+                    Content="{Binding VM_MetaDataFileName, Mode=OneWay}" 
+                    Foreground="{Binding VM_MetaDataFileNameColor, Mode=OneWay}" 
+                    HorizontalContentAlignment="Center" />
+            <Label Grid.Row="11"
+                    Content="{Binding VM_LearningDataFileName, Mode=OneWay}" 
+                    Foreground="{Binding VM_LearningDataFileNameColor, Mode=OneWay}" 
+                    HorizontalContentAlignment="Center" />
+            <Label Grid.Row="12"
+                    Content="{Binding VM_AlgorithmDataFileName, Mode=OneWay}" 
+                    Foreground="{Binding VM_AlgorithmDataFileNameColor, Mode=OneWay}" 
+                    HorizontalContentAlignment="Center" />
+        </Grid>
+
+    </Border>
+</UserControl>

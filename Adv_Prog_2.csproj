@@ -4,17 +4,17 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <Platforms>AnyCPU;x86</Platforms>
+    <Platforms>x86</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Resources\playback-beginning.png" />
-    <None Remove="Resources\playback-end.png" />
-    <None Remove="Resources\playback-fast-forward.png" />
-    <None Remove="Resources\playback-pause.png" />
-    <None Remove="Resources\playback-play.png" />
-    <None Remove="Resources\playback-rewind.png" />
-    <None Remove="Resources\playback-stop.png" />
+    <None Remove="resources\playback-beginning.png" />
+    <None Remove="resources\playback-end.png" />
+    <None Remove="resources\playback-fast-forward.png" />
+    <None Remove="resources\playback-pause.png" />
+    <None Remove="resources\playback-play.png" />
+    <None Remove="resources\playback-rewind.png" />
+    <None Remove="resources\playback-stop.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,19 +22,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="StatisticAnalysis">
-      <HintPath>Resources\libs\AnalysisUtil.dll</HintPath>
+      <HintPath>libs\AnalysisUtil.dll</HintPath>
     </Reference>
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\icons\playback-beginning.png" />
-    <Resource Include="Resources\icons\playback-end.png" />
-    <Resource Include="Resources\icons\playback-fast-forward.png" />
-    <Resource Include="Resources\icons\playback-pause.png" />
-    <Resource Include="Resources\icons\playback-play.png" />
-    <Resource Include="Resources\icons\playback-rewind.png" />
-    <Resource Include="Resources\icons\playback-stop.png" />
+    <Resource Include="resources\icons\playback-beginning.png" />
+    <Resource Include="resources\icons\playback-end.png" />
+    <Resource Include="resources\icons\playback-fast-forward.png" />
+    <Resource Include="resources\icons\playback-pause.png" />
+    <Resource Include="resources\icons\playback-play.png" />
+    <Resource Include="resources\icons\playback-rewind.png" />
+    <Resource Include="resources\icons\playback-stop.png" />
   </ItemGroup>
 
   <ItemGroup>

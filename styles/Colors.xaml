@@ -8,6 +8,15 @@
     <Color x:Key="DarkGrayBlue">#36474e</Color>
     <SolidColorBrush x:Key="DarkGrayBlueBrush" Color="{StaticResource DarkGrayBlue}" />
 
+    <Color x:Key="MidGray">#999</Color>
+    <SolidColorBrush x:Key="MidGrayBrush" Color="{StaticResource MidGray}" />
+
+    <Color x:Key="LightGray">#ccc</Color>
+    <SolidColorBrush x:Key="LightGrayBrush" Color="{StaticResource LightGray}" />
+
+    <Color x:Key="LightBlueGray">#ccc</Color>
+    <SolidColorBrush x:Key="LightBlueGrayBrush" Color="{StaticResource LightBlueGray}" />
+
     <Color x:Key="MidGrayBlue">#648391</Color>
     <SolidColorBrush x:Key="MidGrayBlueBrush" Color="{StaticResource MidGrayBlue}" />
 
@@ -24,18 +33,12 @@
     <SolidColorBrush x:Key="LabelForegroundBrush" Color="{StaticResource LabelForeground}" />
 
     <SolidColorBrush x:Key="MediaPanelBackgroundBrush" Color="{StaticResource BlackenedGray}" />
+    <SolidColorBrush x:Key="MediaLabelForegroundBrush" Color="{StaticResource LightGray}" />
+    <SolidColorBrush x:Key="MediaButtonBackgroundBrush" Color="{StaticResource MidGray}" />
 
-    <Color x:Key="MediaLabelForeground">#ccc</Color>
-    <SolidColorBrush x:Key="MediaLabelForegroundBrush" Color="{StaticResource MediaLabelForeground}" />
+    <SolidColorBrush x:Key="MediaButtonBackgroundHoverBrush" Color="{StaticResource LightBlueGray}" />
 
-    <Color x:Key="MediaButtonBackground">#999</Color>
-    <SolidColorBrush x:Key="MediaButtonBackgroundBrush" Color="{StaticResource MediaButtonBackground}" />
-
-    <Color x:Key="MediaButtonBackgroundHover">#99aabb</Color>
-    <SolidColorBrush x:Key="MediaButtonBackgroundHoverBrush" Color="{StaticResource MediaButtonBackgroundHover}" />
-
-    <Color x:Key="MediaButtonBorder">#99aabb</Color>
-    <SolidColorBrush x:Key="MediaButtonBorderBrush" Color="{StaticResource MediaButtonBorder}" />
+    <SolidColorBrush x:Key="MediaButtonBorderBrush" Color="{StaticResource LightBlueGray}" />
 
     <SolidColorBrush x:Key="ColumnListBackgroundBrush" Color="Black" />
 
