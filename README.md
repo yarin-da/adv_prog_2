@@ -5,10 +5,9 @@
 ## Table of Contents
 * [1. FlightGear Inspection Client v1.0](#1-flightgear-inspection-client-v10)
 * [2. Introduction](#2-introduction)
-* [2.1. This Version includes](#21-this-version-includes)
 * [3. Dependencies](#3-dependencies)
 * [4. User Guide](#4-user-guide)
-  *  [4.1. Required Programs](#41-required-programs)
+  * [4.1. Additional Programs](#41-additional-programs)
   * [4.2. Setup FlightGear](#42-setup-flightgear)
   * [4.3. Installation](#43-installation)
   * [4.4. How To Use](#44-how-to-use)
@@ -22,9 +21,7 @@
 
 This project provides a simple minimalistic GUI client that aids the user in analyzing and detecting anomalies in a flight. The flight can also be simulated using FlightGear alongside this program. The interface provides playback ability and several useful panels that make the data easier to analyze (e.g. graphs, dashboard, joystick).
 
-## 2.1. This Version includes
-
-***
+## This Version includes
 
 * Communication with a FlightGear server to simulate a flight (given flight data in CSV form).
 
@@ -109,13 +106,13 @@ In order to increase backward compatibility:
 
 # 5. UML Diagrams
 
-![UML Model](diagrams/uml_model.PNG)
+![UML Model](resources/images/uml_model.PNG)
 
 The program's responsibilities are split by many classes that interact with eachother. The model class/interface is used as a facade for this whole process.
 
 It's also implemented as a singleton, because all view models were designed to share data by using the same instance of the model class.
 
-![UML MVVM](diagrams/uml_mvvm.PNG)
+![UML MVVM](resources/images/uml_mvvm.PNG)
 
 The project uses MVVM pattern to decouple the view from the model.
 Each panel in the main window has its own view (xaml and xaml.cs).
@@ -139,5 +136,3 @@ All view models share the same instance of the model class (because it's a singl
 * [Flight Inspection Client (master branch)](https://github.com/yarin-da/adv_prog_2)
 * [DLL examples source code](https://github.com/yarin-da/adv_prog_2_dll)
 * [Program Demonstration Video](YOUTUBE_LINK)
-   
-***
