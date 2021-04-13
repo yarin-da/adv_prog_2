@@ -13,7 +13,7 @@
   * [4.4. How To Use](#44-how-to-use)
 * [5. UML Diagrams](#5-uml-diagrams)
 * [6. Contributors](#6-contributors)
-* [7. Useful Links](#7-useful-links)
+* [7. Links and Demonstration Video](#7-links-and-demonstration-video)
 
 ***
 
@@ -29,10 +29,10 @@ This project provides a simple minimalistic GUI client that aids the user in ana
 
 * A dynamic joystick that simulates the pilot's controls during playback (given flight data).
 
-* Diffrent graphs that show the correlation relationship between different data features in the flight data file.
+* Multiple graphs that show the correlation relationship between different data features in the flight data file.
 The graphs update automatically during playback.
 
-* The user is able to provide a DLL with custom anomaly detection algorithm (according to a specific API). The program is able to load the DLL dynamically at runtime and show the user the anomalies.
+* The user is able to provide a DLL with custom anomaly detection algorithm (according to a specific API). The program is able to load the DLL dynamically at runtime and show the user anomalies as the exact time they occur.
 
 ***
 
@@ -119,6 +119,12 @@ Each panel in the main window has its own view (xaml and xaml.cs).
 Each view is connected to its own view model.
 All view models share the same instance of the model class (because it's a singleton).
 
+## For more information
+
+There are `cd` files in the [diagrams](diagrams) folder
+
+You can open them with Visual Studio to get more in-depth look.
+
 ***
 
 # 6. Contributors
@@ -129,10 +135,13 @@ All view models share the same instance of the model class (because it's a singl
 
 ***
 
-# 7. Useful Links
+# 7. Links and Demonstration Video
 
 * [Oxyplot Repository](https://github.com/oxyplot/oxyplot)
 * [FlightGear Simulator Download Page](https://www.flightgear.org/download)
 * [Flight Inspection Client (master branch)](https://github.com/yarin-da/adv_prog_2)
 * [DLL examples source code](https://github.com/yarin-da/adv_prog_2_dll)
-* [Program Demonstration Video](YOUTUBE_LINK)
+
+## Demonstration Video
+
+[![Demonstration Video](http://i3.ytimg.com/vi/ILoC-QU3Hvs/sddefault.jpg)](http://www.youtube.com/watch?v=ILoC-QU3Hvs "Video Title")
